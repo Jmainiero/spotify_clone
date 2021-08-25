@@ -4,6 +4,10 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const SpotifyWebApi = require('spotify-web-api-node');
+const apiCalls = require('./components/apiCalls');
+const {
+  default: axios
+} = require('axios');
 const port = 8888;
 
 app.use(cors());
@@ -12,17 +16,19 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-
 app.post("/login", (req, res) => {
   try {
-    var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming'];
+    var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative'];
     const spotifyApi = new SpotifyWebApi({
       redirectUri: process.env.REDIRECT_URI,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
     });
     const code = req.body.code;
+    // console.log(code);
+
     var authorizeURL = spotifyApi.createAuthorizeURL(scopes);
+    // console.log(authorizeURL);
     spotifyApi
       .authorizationCodeGrant(code)
       .then(data => {
@@ -30,7 +36,7 @@ app.post("/login", (req, res) => {
           accessToken: data.body.access_token,
           refreshToken: data.body.refresh_token,
           expiresIn: data.body.expires_in,
-        })
+        });
       })
       .catch(err => {
         console.log(err);
@@ -41,8 +47,6 @@ app.post("/login", (req, res) => {
   }
 
 });
-
-
 
 app.post("/refresh", (req, res) => {
   const refreshToken = req.body.refreshToken;
@@ -66,6 +70,10 @@ app.post("/refresh", (req, res) => {
     })
 });
 
+app.post('/api/me-playlists', async (req, res) => {
+  const r = await apiCalls.getAllPlaylists(req.body.access_token);
+  res.status(200).send(r);
+})
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

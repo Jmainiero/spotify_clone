@@ -56,15 +56,16 @@
 
 .sidebar {
   background-color: #161212;
-  height: 100%;
-  width: 13rem;
-  font-size: 1rem;
+  max-height: 100%;
+  max-width: 18rem;
+  font-size: 0.8rem;
   position: absolute;
   display: block;
   left: 0;
   top: 0;
   font-weight: 400;
   color: #b3b3b3;
+  overflow: hidden;
 
   & ul {
     list-style: none;
@@ -86,12 +87,14 @@
     font-weight: 300;
     text-transform: uppercase;
     margin-left: 2rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   & .scrollable {
-    overflow: auto;
-    height: 300px;
+    overflow-y: auto;
+    max-height: 50vh;
+    scrollbar-color: red yellow;
+
 
   }
 }

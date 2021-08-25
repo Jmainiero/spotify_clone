@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import useAuth from '../components/auth';
 import SpotifyWebApi from 'spotify-web-api-node';
 import Sidebar from '../components/sidebar';
+const axios = require('axios');
+
 // import Player from '../components/primaryBottomBar';
 export default function Dashboard({ code }) {
   const spotifyApi = new SpotifyWebApi({
@@ -17,15 +19,18 @@ export default function Dashboard({ code }) {
 
   useEffect(() => {
     if (!accessToken) return;
-    const fetchAPI = async () => {
+
+    const fetchPlaylists = async () => {
       try {
-        const r = await spotifyApi.getUserPlaylists('1238207050');
-        setPlaylists(r.body.items);
+        const r = await axios.post('http://localhost:8888/api/me-playlists', {
+          access_token: accessToken,
+        });
+        setPlaylists(r.data.items);
       } catch (e) {
         throw e;
       }
     };
-    fetchAPI();
+    fetchPlaylists();
   }, [accessToken]);
   return (
     <div>
