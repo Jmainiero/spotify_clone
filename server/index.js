@@ -75,6 +75,11 @@ app.post('/playlists', async (req, res) => {
   res.status(200).send(r);
 })
 
+app.post('/recommended', async (req, res) => {
+  const r = await apiCalls.getRecommended(req.body.access_token);
+  res.status(200).send(r);
+});
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

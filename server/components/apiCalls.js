@@ -18,6 +18,28 @@ const getAllPlaylists = async (accessToken) => {
   }
 };
 
+const getRecommended = async (accessToken) => {
+  try {
+    console.log(accessToken);
+    const r = await axios.get('https://api.spotify.com/v1/recommendations', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+      params: {
+        seed_tracks: '08ir631EiCA7xIms7JDp15',
+        seed_atists: '7dGJo4pcD2V6oG8kP0tJRR',
+        seed_genre: 'country'
+      }
+    });
+    console.log(r.data)
+    return r.data;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
 module.exports = {
-  getAllPlaylists
+  getAllPlaylists,
+  getRecommended
 };
