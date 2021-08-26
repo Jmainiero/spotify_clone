@@ -70,7 +70,7 @@ app.post("/refresh", (req, res) => {
     })
 });
 
-app.post('/api/me-playlists', async (req, res) => {
+app.post('/playlists', async (req, res) => {
   const r = await apiCalls.getAllPlaylists(req.body.access_token);
   res.status(200).send(r);
 })
