@@ -19,7 +19,7 @@ const PrimaryBottomBar = (accessToken) => {
           token={accessToken.accessToken}
           styles={{
             activeColor: '#fff',
-            bgColor: '#161212',
+            bgColor: '#181818',
             color: '#fff',
             loaderColor: '#fff',
             sliderColor: '#1cb954',

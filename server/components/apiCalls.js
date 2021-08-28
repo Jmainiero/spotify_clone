@@ -32,14 +32,30 @@ const getRecommended = async (accessToken) => {
         seed_genre: 'country'
       }
     });
-    console.log(r.data)
     return r.data;
 
   } catch (e) {
     console.log(e);
   }
 };
+const getRecentlyPlayed = async (accessToken) => {
+  try {
+    console.log(accessToken);
+    const r = await axios.get('https://api.spotify.com/v1/me/player/recently-played', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+    });
+    return r.data.items;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 module.exports = {
   getAllPlaylists,
-  getRecommended
+  getRecommended,
+  getRecentlyPlayed
 };

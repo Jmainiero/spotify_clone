@@ -1,13 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&display=swap');
 
 .App {
+  // background-color: #191414;
   background-color: #191414;
   min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden !important;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* font-size: calc(10px + 2vmin); */
   color: white;
   font-family: 'Montserrat', sans-serif;
 }
@@ -17,14 +19,18 @@
   padding: 1.5rem 1rem 1rem 1rem;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
 .footer {
   position: absolute;
   z-index: 9999;
   bottom: 0;
-  background: #141010;
+  background: #181818;
   width: 100%;
   text-align: center;
-  height: 51px;
+  height: 35px;
   font-size: 0.8rem;
 
   & a {
@@ -61,7 +67,7 @@
 }
 
 .sidebar {
-  background-color: #161212;
+  background-color: #000;
   max-height: 100%;
   max-width: 18rem;
   font-size: 0.8rem;
@@ -119,11 +125,12 @@
 
 .bottom-bar {
   width: 100%;
-  background: #161212;
+  background: #181818;
   position: absolute;
-  bottom: calc(0px + 50px);
+  bottom: calc(0px + 35px);
   left: 0;
-  padding-bottom: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #282828;
 }
 
 ::-webkit-scrollbar {
@@ -143,5 +150,55 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(54, 56, 58);
+}
 
+.main-view {
+    font-size: 0.8rem !important;
+    height: calc(100vh - 30vh);
+    width: calc(100vw- 20rem);
+    margin-left: 20rem;
+
+    overflow-y: scroll;
+}
+
+.recommended {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+
+  &--title {
+    flex-basis: 100%;
+    text-align: left;
+  }
+
+  &--block {
+    background-color: rgba(24, 24, 24, 1);
+    border-radius: 3px;
+    padding: 0.5rem;
+    margin: 0.6rem;
+    width: 10rem;
+    height: 12rem;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+
+    &__cover {
+      height: 80%;
+
+      img {
+        width: 100%;
+        height: 85%;
+      }
+    }
+
+    &__title a {
+      font-weight: 800;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .1);
+    }
+  }
 }

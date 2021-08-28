@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 
 app.post("/login", (req, res) => {
   try {
-    var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative'];
+    var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative', 'user-read-recently-played'];
     const spotifyApi = new SpotifyWebApi({
       redirectUri: process.env.REDIRECT_URI,
       clientId: process.env.CLIENT_ID,
@@ -77,6 +77,10 @@ app.post('/playlists', async (req, res) => {
 
 app.post('/recommended', async (req, res) => {
   const r = await apiCalls.getRecommended(req.body.access_token);
+  res.status(200).send(r);
+});
+app.post('/recentlyPlayed', async (req, res) => {
+  const r = await apiCalls.getRecentlyPlayed(req.body.access_token);
   res.status(200).send(r);
 });
 
