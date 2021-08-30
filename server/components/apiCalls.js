@@ -20,7 +20,6 @@ const getAllPlaylists = async (accessToken) => {
 
 const getRecommended = async (accessToken) => {
   try {
-    console.log(accessToken);
     const r = await axios.get('https://api.spotify.com/v1/recommendations', {
       headers: {
         'Accept': 'application/json',
@@ -40,7 +39,6 @@ const getRecommended = async (accessToken) => {
 };
 const getRecentlyPlayed = async (accessToken) => {
   try {
-    console.log(accessToken);
     const r = await axios.get('https://api.spotify.com/v1/me/player/recently-played', {
       headers: {
         'Accept': 'application/json',
@@ -53,9 +51,24 @@ const getRecentlyPlayed = async (accessToken) => {
     console.log(e);
   }
 };
+const getFeaturedPlaylists = async (accessToken) => {
+  try {
+    const r = await axios.get('https://api.spotify.com/v1/browse/featured-playlists', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+    });
+    return r.data;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   getAllPlaylists,
   getRecommended,
-  getRecentlyPlayed
+  getRecentlyPlayed,
+  getFeaturedPlaylists
 };

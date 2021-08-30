@@ -15,6 +15,7 @@ export default function Dashboard({ code }) {
   const [playlists, setPlaylists] = useState();
   const [recommended, setRecommended] = useState();
   const [recentlyPlayed, setRecentlyPlayed] = useState();
+  const [featuredPlaylists, setFeaturedPlaylists] = useState();
 
   useEffect(() => {
     if (!accessToken) return;
@@ -55,14 +56,32 @@ export default function Dashboard({ code }) {
         throw e;
       }
     };
+    const fetchFeaturedPlaylists = async () => {
+      try {
+        const r = await axios.post('http://localhost:8888/getFeatured', {
+          access_token: accessToken,
+        });
+        console.log(r.data);
+        setFeaturedPlaylists(r.data);
+      } catch (e) {
+        throw e;
+      }
+    };
     fetchPlaylists();
     fetchRecommended();
     fetchRecentlyPlayed();
+    fetchFeaturedPlaylists();
   }, [accessToken]);
   return (
     <div>
       <Sidebar playlists={playlists} />
-      {recommended && recentlyPlayed ? <MainView recommended={recommended} recentlyPlayed={recentlyPlayed} /> : null}
+      {recommended && recentlyPlayed ? (
+        <MainView
+          recommended={recommended}
+          recentlyPlayed={recentlyPlayed}
+          featuredPlaylists={featuredPlaylists}
+        />
+      ) : null}
       {accessToken ? <BottomBar accessToken={accessToken} /> : null}
     </div>
   );

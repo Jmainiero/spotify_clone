@@ -83,6 +83,10 @@ app.post('/recentlyPlayed', async (req, res) => {
   const r = await apiCalls.getRecentlyPlayed(req.body.access_token);
   res.status(200).send(r);
 });
+app.post('/getFeatured', async (req, res) => {
+  const r = await apiCalls.getFeaturedPlaylists(req.body.access_token);
+  res.status(200).send(r);
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
