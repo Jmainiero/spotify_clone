@@ -61,8 +61,7 @@ export default function Dashboard({ code }) {
         const r = await axios.post('http://localhost:8888/getFeatured', {
           access_token: accessToken,
         });
-        console.log(r.data);
-        setFeaturedPlaylists(r.data);
+        setFeaturedPlaylists(r.data.playlists.items);
       } catch (e) {
         throw e;
       }

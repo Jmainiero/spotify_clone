@@ -44,6 +44,9 @@ const getRecentlyPlayed = async (accessToken) => {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + accessToken
       },
+      params: {
+        limit: 10
+      }
     });
     return r.data.items;
 
@@ -58,6 +61,9 @@ const getFeaturedPlaylists = async (accessToken) => {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + accessToken
       },
+      params: {
+        limit: 20
+      }
     });
     return r.data;
 
