@@ -16,6 +16,7 @@ export default function Dashboard({ code }) {
   const [recommended, setRecommended] = useState();
   const [recentlyPlayed, setRecentlyPlayed] = useState();
   const [featuredPlaylists, setFeaturedPlaylists] = useState();
+  const [topArtists, setTopArtists] = useState();
 
   useEffect(() => {
     if (!accessToken) return;
@@ -66,10 +67,21 @@ export default function Dashboard({ code }) {
         throw e;
       }
     };
+    const fetchTopArtistTracks = async () => {
+      try {
+        const r = await axios.post('http://localhost:8888/getTopArtistTrack', {
+          access_token: accessToken,
+        });
+        setTopArtists(r.data);
+      } catch (e) {
+        throw e;
+      }
+    };
     fetchPlaylists();
     fetchRecommended();
     fetchRecentlyPlayed();
     fetchFeaturedPlaylists();
+    fetchTopArtistTracks();
   }, [accessToken]);
   return (
     <div>
@@ -79,6 +91,7 @@ export default function Dashboard({ code }) {
           recommended={recommended}
           recentlyPlayed={recentlyPlayed}
           featuredPlaylists={featuredPlaylists}
+          topArtists={topArtists}
         />
       ) : null}
       {accessToken ? <BottomBar accessToken={accessToken} /> : null}

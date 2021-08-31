@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 
 app.post("/login", (req, res) => {
   try {
-    var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative', 'user-read-recently-played'];
+    var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative', 'user-read-recently-played', 'user-top-read'];
     const spotifyApi = new SpotifyWebApi({
       redirectUri: process.env.REDIRECT_URI,
       clientId: process.env.CLIENT_ID,
@@ -26,9 +26,7 @@ app.post("/login", (req, res) => {
     });
     const code = req.body.code;
     // console.log(code);
-
     var authorizeURL = spotifyApi.createAuthorizeURL(scopes);
-    // console.log(authorizeURL);
     spotifyApi
       .authorizationCodeGrant(code)
       .then(data => {
@@ -85,6 +83,10 @@ app.post('/recentlyPlayed', async (req, res) => {
 });
 app.post('/getFeatured', async (req, res) => {
   const r = await apiCalls.getFeaturedPlaylists(req.body.access_token);
+  res.status(200).send(r);
+});
+app.post('/getTopArtistTrack', async (req, res) => {
+  const r = await apiCalls.getTopArtistsTracks(req.body.access_token);
   res.status(200).send(r);
 });
 

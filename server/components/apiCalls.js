@@ -71,10 +71,26 @@ const getFeaturedPlaylists = async (accessToken) => {
     console.log(e);
   }
 };
+const getTopArtistsTracks = async (accessToken) => {
+  try {
+    const r = await axios.get('https://api.spotify.com/v1/me/top/artists', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    console.log(r.data.items);
+    return r.data.items;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   getAllPlaylists,
   getRecommended,
   getRecentlyPlayed,
-  getFeaturedPlaylists
+  getFeaturedPlaylists,
+  getTopArtistsTracks
 };
