@@ -86,11 +86,34 @@ const getTopArtistsTracks = async (accessToken) => {
     console.log(e);
   }
 };
+const getDefaultPlaylists = async (accessToken) => {
+  try {
+    const r = await axios.get('https://api.spotify.com/v1/search?q=Discover', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }, 
+      params: {
+        'limit': 5,
+        'type': 'playlist'
+      }
+    });
+    const k = r.data.playlists.items.filter(e => {
+      if (e.name.indexOf('Discover') > -1) return e;
+    });
+    console.log(k.forEach(e => console.log(e.name)));
+    return k;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   getAllPlaylists,
   getRecommended,
   getRecentlyPlayed,
   getFeaturedPlaylists,
-  getTopArtistsTracks
+  getTopArtistsTracks,
+  getDefaultPlaylists
 };

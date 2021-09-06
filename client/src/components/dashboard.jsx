@@ -77,11 +77,22 @@ export default function Dashboard({ code }) {
         throw e;
       }
     };
+    const fetchDefaultPlaylists = async () => {
+      try {
+        const r = await axios.post('http://localhost:8888/defaultPlaylists', {
+          access_token: accessToken,
+        });
+        console.log(r.data);
+      } catch (e) {
+        throw e;
+      }
+    };
     fetchPlaylists();
     fetchRecommended();
     fetchRecentlyPlayed();
     fetchFeaturedPlaylists();
     fetchTopArtistTracks();
+    // fetchDefaultPlaylists();
   }, [accessToken]);
   return (
     <div>

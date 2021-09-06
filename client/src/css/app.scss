@@ -156,10 +156,12 @@ a {
 
 .main-view {
   font-size: 0.8rem !important;
-  height: calc(100vh - 30vh);
+  height: calc(100vh - 15vh);
   width: calc(100vw- 20rem);
   margin-left: 20rem;
-
+  top: 1.5rem;
+  left: 0;
+  position: absolute;
   overflow-y: scroll;
 }
 

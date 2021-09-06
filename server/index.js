@@ -26,7 +26,9 @@ app.post("/login", (req, res) => {
     });
     const code = req.body.code;
     // console.log(code);
+
     var authorizeURL = spotifyApi.createAuthorizeURL(scopes);
+    // console.log(authorizeURL);
     spotifyApi
       .authorizationCodeGrant(code)
       .then(data => {
@@ -81,12 +83,8 @@ app.post('/recentlyPlayed', async (req, res) => {
   const r = await apiCalls.getRecentlyPlayed(req.body.access_token);
   res.status(200).send(r);
 });
-app.post('/getFeatured', async (req, res) => {
-  const r = await apiCalls.getFeaturedPlaylists(req.body.access_token);
-  res.status(200).send(r);
-});
-app.post('/getTopArtistTrack', async (req, res) => {
-  const r = await apiCalls.getTopArtistsTracks(req.body.access_token);
+app.post('/defaultPlaylists', async (req, res) => {
+  const r = await apiCalls.getDefaultPlaylists(req.body.access_token);
   res.status(200).send(r);
 });
 
