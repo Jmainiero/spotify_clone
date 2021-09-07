@@ -16,7 +16,7 @@
 }
 
 #logo {
-  width: 60%;
+  width: 55%;
   padding: 1.5rem 1rem 1rem 1rem;
 }
 
@@ -71,7 +71,7 @@ a {
 .sidebar {
   background-color: #000;
   max-height: 100%;
-  max-width: 18rem;
+  max-width: 15rem;
   font-size: 0.8rem;
   position: absolute;
   display: block;
@@ -87,6 +87,15 @@ a {
 
     & li {
       padding: 0.4rem;
+      display: inline-block;
+      width: 80%;
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+
+      &:not(:last-child) {
+        margin-bottom: 0.2rem;
+      }
 
       & a {
         color: inherit;
@@ -104,7 +113,7 @@ a {
   &::after {
     content: "";
     width: 50%;
-    left: 2vw;
+    left: 1vw;
     position: absolute;
     border-bottom: 0.2px solid white !important;
   }
@@ -159,10 +168,11 @@ a {
   font-size: 0.8rem !important;
   height: calc(100vh - 15vh);
   width: calc(100vw- 20rem);
-  margin-left: 20rem;
+  margin-left: 18rem;
+  margin-bottom: 5rem;
   top: 5rem;
   left: 0;
-  position: absolute;
+  // position: absolute;
   overflow-y: scroll;
 }
 
@@ -174,6 +184,15 @@ a {
   &--title {
     flex-basis: 100%;
     text-align: left;
+
+    & h1 {
+      font-weight: 800;
+    }
+
+    & h4 {
+      font-weight: 500;
+
+    }
   }
 
   &--block {

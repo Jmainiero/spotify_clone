@@ -5,9 +5,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const SpotifyWebApi = require('spotify-web-api-node');
 const apiCalls = require('./components/apiCalls');
-const {
-  default: axios
-} = require('axios');
 const port = 8888;
 
 app.use(cors());
@@ -17,6 +14,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.post("/login", (req, res) => {
+  console.log('Calling Login')
   try {
     var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative', 'user-read-recently-played', 'user-top-read'];
     const spotifyApi = new SpotifyWebApi({
@@ -102,4 +100,6 @@ app.post('/getNewReleases', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
+}).on('error', function (err) {
+  console.log(err)
 });

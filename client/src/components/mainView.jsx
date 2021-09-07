@@ -12,11 +12,11 @@ export default function mainView({
 }) {
   return (
     <div className='main-view'>
+      <RecentlyPlayed recentlyPlayed={recentlyPlayed} />
+      <GetRecommended recommended={recommended} />
       <NewReleases newReleases={newReleases} />
       <DefaultPlaylists defaultPlaylists={defaultPlaylists} />
-      <RecentlyPlayed recentlyPlayed={recentlyPlayed} />
       <FeaturedPlaylists featuredPlaylists={featuredPlaylists} />
-      <GetRecommended recommended={recommended} />
     </div>
   );
 }

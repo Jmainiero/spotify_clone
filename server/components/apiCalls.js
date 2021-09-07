@@ -26,15 +26,16 @@ const getRecommended = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        seed_tracks: ['4AU7z13HYmPMetlWbq1mys', '69AIpwGNLxr4qS1X5ynx60', '7sapKrjDij2fpDVj0GxP66'],
+        seed_tracks: '69AIpwGNLxr4qS1X5ynx60',
         seed_atists: ['7dGJo4pcD2V6oG8kP0tJRR', '0BvkDsjIUla7X0k6CSWh1I', '5P5FTygHyx2G57oszR3Wot', '04gDigrS5kc9YWfZHwBETP'],
         seed_genre: ['country', 'pop', 'contemporary', 'rap'],
-        limit: 100
+        limit: 25
       }
     });
     console.log(r.data)
-    return r.data;
-
+    return r.data.tracks.sort(function (a, b) {
+      return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0;
+    });
   } catch (e) {
     console.log(e);
   }
