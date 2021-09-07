@@ -87,6 +87,18 @@ app.post('/defaultPlaylists', async (req, res) => {
   const r = await apiCalls.getDefaultPlaylists(req.body.access_token);
   res.status(200).send(r);
 });
+app.post('/getFeatured', async (req, res) => {
+  const r = await apiCalls.getFeaturedPlaylists(req.body.access_token);
+  res.status(200).send(r);
+});
+app.post('/getTopArtistTrack', async (req, res) => {
+  const r = await apiCalls.getTopArtistsTracks(req.body.access_token);
+  res.status(200).send(r);
+});
+app.post('/getNewReleases', async (req, res) => {
+  const r = await apiCalls.getNewReleases(req.body.access_token);
+  res.status(200).send(r);
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

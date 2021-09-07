@@ -26,11 +26,13 @@ const getRecommended = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        seed_tracks: '08ir631EiCA7xIms7JDp15',
-        seed_atists: '7dGJo4pcD2V6oG8kP0tJRR',
-        seed_genre: 'country'
+        seed_tracks: ['4AU7z13HYmPMetlWbq1mys', '69AIpwGNLxr4qS1X5ynx60', '7sapKrjDij2fpDVj0GxP66'],
+        seed_atists: ['7dGJo4pcD2V6oG8kP0tJRR', '0BvkDsjIUla7X0k6CSWh1I', '5P5FTygHyx2G57oszR3Wot', '04gDigrS5kc9YWfZHwBETP'],
+        seed_genre: ['country', 'pop', 'contemporary', 'rap'],
+        limit: 100
       }
     });
+    console.log(r.data)
     return r.data;
 
   } catch (e) {
@@ -45,7 +47,7 @@ const getRecentlyPlayed = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        limit: 10
+        limit: 14
       }
     });
     return r.data.items;
@@ -62,7 +64,7 @@ const getFeaturedPlaylists = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        limit: 20
+        limit: 14
       }
     });
     return r.data;
@@ -77,9 +79,11 @@ const getTopArtistsTracks = async (accessToken) => {
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + accessToken
+      },
+      params: {
+        limit: 14
       }
     });
-    console.log(r.data.items);
     return r.data.items;
 
   } catch (e) {
@@ -88,21 +92,37 @@ const getTopArtistsTracks = async (accessToken) => {
 };
 const getDefaultPlaylists = async (accessToken) => {
   try {
-    const r = await axios.get('https://api.spotify.com/v1/search?q=Discover', {
+    const r = await axios.get('https://api.spotify.com/v1/search?q=Daily%20Mix', {
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + accessToken
-      }, 
+      },
       params: {
-        'limit': 5,
         'type': 'playlist'
       }
     });
     const k = r.data.playlists.items.filter(e => {
-      if (e.name.indexOf('Discover') > -1) return e;
+      if (e.name.indexOf('Daily') > -1 && e.owner.display_name.indexOf('Spotify') > -1) return e;
     });
-    console.log(k.forEach(e => console.log(e.name)));
+    // console.log(k.forEach(e => console.log(e.name)));
     return k;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
+const getNewReleases = async (accessToken) => {
+  try {
+    const r = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+      params: {
+        limit: 14
+      }
+    });
+    return r.data.albums.items;
 
   } catch (e) {
     console.log(e);
@@ -115,5 +135,6 @@ module.exports = {
   getRecentlyPlayed,
   getFeaturedPlaylists,
   getTopArtistsTracks,
-  getDefaultPlaylists
+  getDefaultPlaylists,
+  getNewReleases
 };

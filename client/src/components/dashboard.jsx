@@ -16,8 +16,8 @@ export default function Dashboard({ code }) {
   const [recommended, setRecommended] = useState();
   const [recentlyPlayed, setRecentlyPlayed] = useState();
   const [featuredPlaylists, setFeaturedPlaylists] = useState();
-  const [topArtists, setTopArtists] = useState();
-
+  const [defaultPlaylists, setDefaultPlaylists] = useState();
+  const [newReleases, setnewReleases] = useState();
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -67,19 +67,30 @@ export default function Dashboard({ code }) {
         throw e;
       }
     };
-    const fetchTopArtistTracks = async () => {
+
+    const fetchDefaultPlaylists = async () => {
       try {
-        const r = await axios.post('http://localhost:8888/getTopArtistTrack', {
+        const r = await axios.post('http://localhost:8888/defaultPlaylists', {
           access_token: accessToken,
         });
-        setTopArtists(r.data);
+        setDefaultPlaylists(r.data);
       } catch (e) {
         throw e;
       }
     };
-    const fetchDefaultPlaylists = async () => {
+    const fetchNewReleases = async () => {
       try {
-        const r = await axios.post('http://localhost:8888/defaultPlaylists', {
+        const r = await axios.post('http://localhost:8888/getNewReleases', {
+          access_token: accessToken,
+        });
+        setnewReleases(r.data);
+      } catch (e) {
+        throw e;
+      }
+    };
+    const fetchTopArtists = async () => {
+      try {
+        const r = await axios.post('http://localhost:8888/getTopArtistTrack', {
           access_token: accessToken,
         });
         console.log(r.data);
@@ -91,18 +102,24 @@ export default function Dashboard({ code }) {
     fetchRecommended();
     fetchRecentlyPlayed();
     fetchFeaturedPlaylists();
-    fetchTopArtistTracks();
-    // fetchDefaultPlaylists();
+    fetchDefaultPlaylists();
+    fetchNewReleases();
+    fetchTopArtists();
   }, [accessToken]);
   return (
     <div>
       <Sidebar playlists={playlists} />
-      {recommended && recentlyPlayed ? (
+      {recommended &&
+      recentlyPlayed &&
+      featuredPlaylists &&
+      defaultPlaylists &&
+      newReleases ? (
         <MainView
           recommended={recommended}
           recentlyPlayed={recentlyPlayed}
           featuredPlaylists={featuredPlaylists}
-          topArtists={topArtists}
+          defaultPlaylists={defaultPlaylists}
+          newReleases={newReleases}
         />
       ) : null}
       {accessToken ? <BottomBar accessToken={accessToken} /> : null}

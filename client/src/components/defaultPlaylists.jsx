@@ -1,10 +1,10 @@
-export default function featuredPlaylists({ featuredPlaylists }) {
+export default function defaultPlaylists({ defaultPlaylists }) {
   return (
     <div className='recommended'>
       <div className='recommended--title'>
-        <h1>Featured Playlists</h1>
+        <h1>Default Playlists</h1>
       </div>
-      {featuredPlaylists.map((track, index) => {
+      {defaultPlaylists.map((track, index) => {
         return (
           <a href={track.href} key={index}>
             <div className='recommended--block'>
@@ -12,9 +12,6 @@ export default function featuredPlaylists({ featuredPlaylists }) {
                 <img src={track.images[0].url} alt={track.name} />
               </div>
               <div className='recommended--block__title'>{track.name}</div>
-              <div className='recommended--block__desc'>
-                {track.description}
-              </div>
             </div>
           </a>
         );
