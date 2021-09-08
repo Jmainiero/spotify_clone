@@ -87,11 +87,17 @@ a {
 
     & li {
       padding: 0.4rem;
-      display: inline-block;
+      display: flex;
+      align-items: center;
       width: 80%;
       white-space: nowrap;
       overflow: hidden !important;
       text-overflow: ellipsis;
+      transition: all 0.3s;
+
+      &:hover {
+        color: #ffffff;
+      }
 
       &:not(:last-child) {
         margin-bottom: 0.2rem;

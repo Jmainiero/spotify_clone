@@ -7,7 +7,6 @@ export default function useAuth(code) {
   const [expiresIn, setExpiresIn] = useState();
 
   useEffect(() => {
-    console.log('Calling auth');
     axios
       .post('http://localhost:8888/login', {
         code,
@@ -20,7 +19,6 @@ export default function useAuth(code) {
         window.history.pushState({}, null, '/');
       })
       .catch((er) => {
-        console.log(er);
         window.location = '/';
       });
   }, [code]);

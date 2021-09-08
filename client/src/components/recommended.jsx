@@ -1,5 +1,4 @@
 export default function getRecommended({ recommended }) {
-  console.log(recommended);
   return (
     <div className='recommended'>
       <div className='recommended--title'>

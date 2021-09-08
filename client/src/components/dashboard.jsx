@@ -8,7 +8,6 @@ import MainView from '../components/mainView';
 const axios = require('axios');
 
 export default function Dashboard({ code }) {
-  console.log(code);
   const spotifyApi = new SpotifyWebApi({
     clientId: '8b945ef10ea24755b83ac50cede405a0',
   });
@@ -25,12 +24,10 @@ export default function Dashboard({ code }) {
   }, [accessToken]);
 
   useEffect(() => {
-    console.log(accessToken);
     if (!accessToken) return;
 
     const fetchPlaylists = async () => {
       try {
-        console.log('Calling 1');
         const r = await axios.post('http://localhost:8888/playlists', {
           access_token: accessToken,
         });
@@ -41,7 +38,6 @@ export default function Dashboard({ code }) {
     };
 
     const fetchRecommended = async () => {
-      console.log('Calling 2');
       try {
         const r = await axios.post('http://localhost:8888/recommended', {
           access_token: accessToken,
@@ -52,7 +48,6 @@ export default function Dashboard({ code }) {
       }
     };
     const fetchRecentlyPlayed = async () => {
-      console.log('Calling 3');
       try {
         const r = await axios.post('http://localhost:8888/recentlyPlayed', {
           access_token: accessToken,
@@ -63,7 +58,6 @@ export default function Dashboard({ code }) {
       }
     };
     const fetchFeaturedPlaylists = async () => {
-      console.log('Calling 4');
       try {
         const r = await axios.post('http://localhost:8888/getFeatured', {
           access_token: accessToken,
@@ -75,7 +69,6 @@ export default function Dashboard({ code }) {
     };
 
     const fetchDefaultPlaylists = async () => {
-      console.log('Calling 5');
       try {
         const r = await axios.post('http://localhost:8888/defaultPlaylists', {
           access_token: accessToken,
@@ -86,7 +79,6 @@ export default function Dashboard({ code }) {
       }
     };
     const fetchNewReleases = async () => {
-      console.log('Calling 6');
       try {
         const r = await axios.post('http://localhost:8888/getNewReleases', {
           access_token: accessToken,
@@ -97,12 +89,10 @@ export default function Dashboard({ code }) {
       }
     };
     const fetchTopArtists = async () => {
-      console.log('Calling 7');
       try {
         const r = await axios.post('http://localhost:8888/getTopArtistTrack', {
           access_token: accessToken,
         });
-        console.log(r.data);
       } catch (e) {
         throw e;
       }
