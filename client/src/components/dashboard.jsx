@@ -18,6 +18,8 @@ export default function Dashboard({ code }) {
   const [featuredPlaylists, setFeaturedPlaylists] = useState();
   const [defaultPlaylists, setDefaultPlaylists] = useState();
   const [newReleases, setnewReleases] = useState();
+  const [topCategories, setTopCategories] = useState();
+
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -88,11 +90,12 @@ export default function Dashboard({ code }) {
         throw e;
       }
     };
-    const fetchTopArtists = async () => {
+    const fetchTopCategories = async () => {
       try {
-        const r = await axios.post('http://localhost:8888/getTopArtistTrack', {
+        const r = await axios.post('http://localhost:8888/getTopCategories', {
           access_token: accessToken,
         });
+        setTopCategories(r.data);
       } catch (e) {
         throw e;
       }
@@ -103,7 +106,7 @@ export default function Dashboard({ code }) {
     fetchFeaturedPlaylists();
     fetchDefaultPlaylists();
     fetchNewReleases();
-    fetchTopArtists();
+    fetchTopCategories();
   }, [accessToken]);
   return (
     <div>
@@ -112,13 +115,15 @@ export default function Dashboard({ code }) {
       recentlyPlayed &&
       featuredPlaylists &&
       defaultPlaylists &&
-      newReleases ? (
+      newReleases &&
+      topCategories ? (
         <MainView
           recommended={recommended}
           recentlyPlayed={recentlyPlayed}
           featuredPlaylists={featuredPlaylists}
           defaultPlaylists={defaultPlaylists}
           newReleases={newReleases}
+          topCategories={topCategories}
         />
       ) : null}
       {accessToken ? <BottomBar accessToken={accessToken} /> : null}

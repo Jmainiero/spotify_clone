@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.post("/login", (req, res) => {
-  console.log('Calling Login')
   try {
     var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative', 'user-read-recently-played', 'user-top-read'];
     const spotifyApi = new SpotifyWebApi({
@@ -95,6 +94,10 @@ app.post('/getTopArtistTrack', async (req, res) => {
 });
 app.post('/getNewReleases', async (req, res) => {
   const r = await apiCalls.getNewReleases(req.body.access_token);
+  res.status(200).send(r);
+});
+app.post('/getTopCategories', async (req, res) => {
+  const r = await apiCalls.getTopCategories(req.body.access_token);
   res.status(200).send(r);
 });
 

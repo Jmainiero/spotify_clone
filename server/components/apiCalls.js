@@ -32,7 +32,6 @@ const getRecommended = async (accessToken) => {
         limit: 25
       }
     });
-    console.log(r.data)
     return r.data.tracks.sort(function (a, b) {
       return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0;
     });
@@ -105,7 +104,6 @@ const getDefaultPlaylists = async (accessToken) => {
     const k = r.data.playlists.items.filter(e => {
       if (e.name.indexOf('Daily') > -1 && e.owner.display_name.indexOf('Spotify') > -1) return e;
     });
-    // console.log(k.forEach(e => console.log(e.name)));
     return k;
 
   } catch (e) {
@@ -129,6 +127,21 @@ const getNewReleases = async (accessToken) => {
     console.log(e);
   }
 };
+const getTopCategories = async (accessToken) => {
+  try {
+    const r = await axios.get('https://api.spotify.com/v1/browse/categories', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    console.log(r.data.categories.items);
+    return r.data.categories.items;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   getAllPlaylists,
@@ -137,5 +150,6 @@ module.exports = {
   getFeaturedPlaylists,
   getTopArtistsTracks,
   getDefaultPlaylists,
-  getNewReleases
+  getNewReleases,
+  getTopCategories
 };
