@@ -15,6 +15,9 @@ export default function newReleases({ newReleases }) {
               <div className='recommended--block__artist'>
                 {track.artists[0].name}
               </div>
+              <div className='recommended--block__desc'>
+                {track.album_type.charAt(0).toUpperCase() + track.album_type.substr(1)}
+              </div>
             </div>
           </a>
         );

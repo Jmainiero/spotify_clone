@@ -1,3 +1,7 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
 import GetRecommended from '../components/recommended';
 import RecentlyPlayed from '../components/recentlyPlayed';
 import FeaturedPlaylists from '../components/featuredPlaylists';
