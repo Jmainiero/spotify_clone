@@ -1,29 +1,36 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import GetRecommended from '../components/recommended';
 import RecentlyPlayed from '../components/recentlyPlayed';
 import FeaturedPlaylists from '../components/featuredPlaylists';
 import DefaultPlaylists from '../components/defaultPlaylists';
 import NewReleases from '../components/newReleases';
-import TopCategories from '../components/topCategories';
+
 export default function mainView({
+  handleClick,
   recommended,
   recentlyPlayed,
   featuredPlaylists,
   defaultPlaylists,
   newReleases,
-  topCategories,
 }) {
   return (
     <div className='main-view'>
-      <RecentlyPlayed recentlyPlayed={recentlyPlayed} />
-      <GetRecommended recommended={recommended} />
-      <NewReleases newReleases={newReleases} />
-      <DefaultPlaylists defaultPlaylists={defaultPlaylists} />
-      <FeaturedPlaylists featuredPlaylists={featuredPlaylists} />
-      <TopCategories topCategories={topCategories} />
+      <GetRecommended recommended={recommended} handleClick={handleClick} />
+      <FeaturedPlaylists
+        featuredPlaylists={featuredPlaylists}
+        handleClick={handleClick}
+      />
+      <NewReleases newReleases={newReleases} handleClick={handleClick} />
+      <RecentlyPlayed
+        recentlyPlayed={recentlyPlayed}
+        handleClick={handleClick}
+      />
+      <DefaultPlaylists
+        defaultPlaylists={defaultPlaylists}
+        handleClick={handleClick}
+      />
     </div>
   );
 }

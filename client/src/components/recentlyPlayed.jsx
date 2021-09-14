@@ -1,26 +1,17 @@
-import Slider from "react-slick";
-export default function recentlyPlayed({ recentlyPlayed }) {
-  var settings = {
-    dots: false,
-    variableWidth: true,
-    variableHeight: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 3,
-    rows: 1
-  };
+import Slider from 'react-slick';
+const slideShowSettings = require('./slideShowSettings');
+export default function recentlyPlayed({ recentlyPlayed, handleClick }) {
   return (
     <div className='recommended'>
       <div className='recommended--title'>
         <h1>Jump Back In</h1>
       </div>
       <div className='recommended--carousel'>
-        <Slider {...settings}>
+        <Slider {...slideShowSettings.settings}>
           {recentlyPlayed.map((track, index) => {
             return (
               <div className='recommended--block' key={index}>
-                <a href={track.track.href} >
+                <a href={track.track.uri} onClick={handleClick}>
                   <div className='recommended--block__cover'>
                     <img
                       src={
@@ -38,7 +29,6 @@ export default function recentlyPlayed({ recentlyPlayed }) {
                     {track.track.artists[0].name}
                   </div>
                 </a>
-
               </div>
             );
           })}

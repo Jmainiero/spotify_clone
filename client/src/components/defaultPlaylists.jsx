@@ -6,14 +6,14 @@ export default function defaultPlaylists({ defaultPlaylists }) {
       </div>
       {defaultPlaylists.map((track, index) => {
         return (
-          <a href={track.href} key={index}>
-            <div className='recommended--block'>
+          <div className='recommended--block' key={index}>
+            <a href={track.uri}>
               <div className='recommended--block__cover'>
                 <img src={track.images[0].url} alt={track.name} />
               </div>
               <div className='recommended--block__title'>{track.name}</div>
-            </div>
-          </a>
+            </a>
+          </div>
         );
       })}
     </div>

@@ -18,7 +18,12 @@ export default function Dashboard({ code }) {
   const [featuredPlaylists, setFeaturedPlaylists] = useState();
   const [defaultPlaylists, setDefaultPlaylists] = useState();
   const [newReleases, setnewReleases] = useState();
-  const [topCategories, setTopCategories] = useState();
+  const [trackUri, setTrackUri] = useState();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setTrackUri(e.currentTarget.href);
+  };
 
   useEffect(() => {
     if (!accessToken) return;
@@ -90,23 +95,13 @@ export default function Dashboard({ code }) {
         throw e;
       }
     };
-    const fetchTopCategories = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/getTopCategories', {
-          access_token: accessToken,
-        });
-        setTopCategories(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
+
     fetchPlaylists();
     fetchRecommended();
     fetchRecentlyPlayed();
     fetchFeaturedPlaylists();
     fetchDefaultPlaylists();
     fetchNewReleases();
-    fetchTopCategories();
   }, [accessToken]);
   return (
     <div>
@@ -115,18 +110,19 @@ export default function Dashboard({ code }) {
       recentlyPlayed &&
       featuredPlaylists &&
       defaultPlaylists &&
-      newReleases &&
-      topCategories ? (
+      newReleases ? (
         <MainView
           recommended={recommended}
           recentlyPlayed={recentlyPlayed}
           featuredPlaylists={featuredPlaylists}
           defaultPlaylists={defaultPlaylists}
           newReleases={newReleases}
-          topCategories={topCategories}
+          handleClick={handleClick}
         />
       ) : null}
-      {accessToken ? <BottomBar accessToken={accessToken} /> : null}
+      {accessToken ? (
+        <BottomBar accessToken={accessToken} trackUri={trackUri} />
+      ) : null}
     </div>
   );
 }

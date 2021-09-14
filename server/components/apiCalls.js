@@ -64,7 +64,7 @@ const getFeaturedPlaylists = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        limit: 14
+        limit: 50
       }
     });
     return r.data;
@@ -135,7 +135,6 @@ const getTopCategories = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       }
     });
-    console.log(r.data.categories.items);
     return r.data.categories.items;
 
   } catch (e) {

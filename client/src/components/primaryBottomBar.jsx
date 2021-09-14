@@ -2,9 +2,17 @@ import { useState, useEffect } from 'react';
 
 import SpotifyPlayer from 'react-spotify-web-playback';
 
-const PrimaryBottomBar = (accessToken) => {
+const PrimaryBottomBar = ({ accessToken, trackUri }) => {
   const [play, setPlay] = useState(false);
-  if (!accessToken.accessToken) return;
+  const [selectedSong, setSelectedSong] = useState(
+    'spotify:playlist:37i9dQZF1DX1KHLbhJkg7B'
+  );
+
+  useEffect(() => {
+    setSelectedSong(trackUri);
+    setPlay(!play);
+  }, [trackUri]);
+  if (!accessToken) return;
   return (
     <div className='bottom-bar'>
       <div className='bottom-bar__player'>
@@ -14,9 +22,9 @@ const PrimaryBottomBar = (accessToken) => {
           callback={(state) => {
             if (!state.isPlaying) setPlay(false);
           }}
-          play={false}
-          uris={['spotify:playlist:37i9dQZF1DX1KHLbhJkg7B']}
-          token={accessToken.accessToken}
+          play={play}
+          uris={selectedSong}
+          token={accessToken}
           styles={{
             activeColor: '#fff',
             bgColor: '#181818',
