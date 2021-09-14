@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import useAuth from '../components/auth';
 import SpotifyWebApi from 'spotify-web-api-node';
-import Sidebar from '../components/sidebar';
+import Sidebar from '../components/sidebar/sidebar';
 import BottomBar from '../components/primaryBottomBar';
-import MainView from '../components/mainView';
+import MainView from '../components/mainview/mainView';
 
 const axios = require('axios');
 

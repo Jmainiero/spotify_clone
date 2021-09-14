@@ -1,6 +1,6 @@
 import SideNavPrimary from './sideNavPrimary';
 import SideNavPlaylist from './sideNavPlaylist';
-import Logo from '../assests/Spotify_Logo_CMYK_White.png';
+import Logo from '../../assests/Spotify_Logo_CMYK_White.png';
 
 const sidebar = ({ playlists }) => {
   return (

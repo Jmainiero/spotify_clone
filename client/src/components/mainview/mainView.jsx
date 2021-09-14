@@ -1,11 +1,11 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import GetRecommended from '../components/recommended';
-import RecentlyPlayed from '../components/recentlyPlayed';
-import FeaturedPlaylists from '../components/featuredPlaylists';
-import DefaultPlaylists from '../components/defaultPlaylists';
-import NewReleases from '../components/newReleases';
+import GetRecommended from './recommended';
+import RecentlyPlayed from './recentlyPlayed';
+import FeaturedPlaylists from './featuredPlaylists';
+import DefaultPlaylists from './defaultPlaylists';
+import NewReleases from './newReleases';
 
 export default function mainView({
   handleClick,
