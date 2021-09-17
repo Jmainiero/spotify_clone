@@ -18,6 +18,8 @@
   padding: 1.5rem 1rem 1rem 1rem;
 }
 
+
+
 a {
   color: inherit;
   text-decoration: none;
@@ -43,6 +45,17 @@ a {
       font-size: 120%;
       letter-spacing: 5px;
     }
+  }
+
+  & p {
+    display: inline-block;
+  }
+
+  & #desktop-only {
+    position: absolute;
+    right: 2vw;
+    color: red;
+    font-size: 0.7rem;
   }
 }
 
@@ -205,6 +218,7 @@ a {
   }
 
   &--block {
+    position: relative;
     background-color: rgba(24, 24, 24, 1);
     border-radius: 13px;
     padding: 1rem;
@@ -216,6 +230,22 @@ a {
     transition: all 0.3s;
     text-align: left;
 
+    &__overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 255, 255, .7);
+      overflow: hidden;
+      width: 100%;
+      height: 0;
+      transition: 0.6s ease;
+      text-align: center;
+
+      & svg {
+        color: rgba(30, 215, 96, 0.6);
+      }
+    }
 
     &__cover {
       max-height: 80%;
@@ -259,5 +289,20 @@ a {
       background-color: rgba(255, 255, 255, .1);
       transform: translateY(-10px);
     }
+
+    &:hover &__overlay {
+      height: 100%;
+
+      & svg,
+      &__IconButton {
+        height: 100%;
+      }
+
+      & svg {
+        width: 40%;
+
+      }
+    }
+
   }
 }

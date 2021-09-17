@@ -4,7 +4,6 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import Sidebar from '../components/sidebar/sidebar';
 import BottomBar from '../components/primaryBottomBar';
 import MainView from '../components/mainview/mainView';
-
 const axios = require('axios');
 
 export default function Dashboard({ code }) {
@@ -13,12 +12,8 @@ export default function Dashboard({ code }) {
   });
   const accessToken = useAuth(code);
   const [playlists, setPlaylists] = useState();
-  const [recommended, setRecommended] = useState();
-  const [recentlyPlayed, setRecentlyPlayed] = useState();
-  const [featuredPlaylists, setFeaturedPlaylists] = useState();
-  const [defaultPlaylists, setDefaultPlaylists] = useState();
-  const [newReleases, setnewReleases] = useState();
   const [trackUri, setTrackUri] = useState();
+  const [master, setMaster] = useState();
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -38,88 +33,31 @@ export default function Dashboard({ code }) {
         const r = await axios.post('http://localhost:8888/playlists', {
           access_token: accessToken,
         });
-        setPlaylists(r.data.items);
+        setPlaylists(r.data);
       } catch (e) {
         throw e;
       }
     };
 
-    const fetchRecommended = async () => {
+    const masterFunction = async () => {
       try {
-        const r = await axios.post('http://localhost:8888/recommended', {
+        const r = await axios.post('http://localhost:8888/master', {
           access_token: accessToken,
         });
-        setRecommended(r.data);
+        console.log(r.data);
+        setMaster(r.data);
       } catch (e) {
         throw e;
       }
     };
-    const fetchRecentlyPlayed = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/recentlyPlayed', {
-          access_token: accessToken,
-        });
-        setRecentlyPlayed(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
-    const fetchFeaturedPlaylists = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/getFeatured', {
-          access_token: accessToken,
-        });
-        setFeaturedPlaylists(r.data.playlists.items);
-      } catch (e) {
-        throw e;
-      }
-    };
-
-    const fetchDefaultPlaylists = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/defaultPlaylists', {
-          access_token: accessToken,
-        });
-        setDefaultPlaylists(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
-    const fetchNewReleases = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/getNewReleases', {
-          access_token: accessToken,
-        });
-        setnewReleases(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
-
+    masterFunction();
     fetchPlaylists();
-    fetchRecommended();
-    fetchRecentlyPlayed();
-    fetchFeaturedPlaylists();
-    fetchDefaultPlaylists();
-    fetchNewReleases();
   }, [accessToken]);
   return (
     <div>
       <Sidebar playlists={playlists} />
-      {recommended &&
-      recentlyPlayed &&
-      featuredPlaylists &&
-      defaultPlaylists &&
-      newReleases ? (
-        <MainView
-          recommended={recommended}
-          recentlyPlayed={recentlyPlayed}
-          featuredPlaylists={featuredPlaylists}
-          defaultPlaylists={defaultPlaylists}
-          newReleases={newReleases}
-          handleClick={handleClick}
-        />
-      ) : null}
+      {console.log(master)}
+      {master ? <MainView master={master} handleClick={handleClick} /> : null}
       {accessToken ? (
         <BottomBar accessToken={accessToken} trackUri={trackUri} />
       ) : null}

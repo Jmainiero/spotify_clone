@@ -1,6 +1,11 @@
 import Slider from 'react-slick';
+import IconButton from '@material-ui/core/IconButton';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
+import { AssignmentTurnedInOutlined } from '@material-ui/icons';
+
 const slideShowSettings = require('../slideShowSettings');
 export default function getRecommended({ recommended, handleClick }) {
+  console.log('Recommened Tracks', recommended);
   return (
     <div className='recommended'>
       <div className='recommended--title'>
@@ -26,6 +31,17 @@ export default function getRecommended({ recommended, handleClick }) {
                     {track.artists[0].name}
                   </div>
                 </a>
+                <div className='recommended--block__overlay'>
+                  <IconButton
+                    aria-label={track.uri}
+                    href={track.uri}
+                    onClick={handleClick}
+                    disableRipple={true}
+                    className='recommended--block__overlay__IconButton'
+                  >
+                    <PlayCircleFilledIcon link={track.uri} />
+                  </IconButton>
+                </div>
               </div>
             );
           })}

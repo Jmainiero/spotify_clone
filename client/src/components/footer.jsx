@@ -7,6 +7,7 @@ export default function footer() {
         Created & Designd by
         <a href='http://johnmainiero.com'> John Mainiero&copy;</a>
       </p>
+      <p id='desktop-only'>This site is intended for desktop use only.</p>
     </div>
   );
 }

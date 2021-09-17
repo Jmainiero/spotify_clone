@@ -1,6 +1,7 @@
 import Slider from 'react-slick';
 const slideShowSettings = require('../slideShowSettings');
 export default function featuredPlaylists({ featuredPlaylists, handleClick }) {
+  console.log('Featured Playlists', featuredPlaylists);
   return (
     <div className='recommended'>
       <div className='recommended--title'>

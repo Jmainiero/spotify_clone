@@ -11,7 +11,7 @@ const getAllPlaylists = async (accessToken) => {
         limit: 50
       }
     });
-    return r.data;
+    return r.data.items;
 
   } catch (e) {
     console.log(e);
@@ -32,8 +32,12 @@ const getRecommended = async (accessToken) => {
         limit: 25
       }
     });
-    return r.data.tracks.sort(function (a, b) {
-      return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0;
+    return ({
+      name: "Just for You",
+      description: 'Get better recommendations the more you listen.',
+      data: r.data.tracks.sort(function (a, b) {
+        return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0;
+      })
     });
   } catch (e) {
     console.log(e);
@@ -50,7 +54,14 @@ const getRecentlyPlayed = async (accessToken) => {
         limit: 14
       }
     });
-    return r.data.items;
+    return ({
+      name: "Jump Back In",
+      data: r.data.items.map((e) => {
+        return {
+          name: e.track.name, artists: e.track.artists, uri: e.track.uri, album: e.track.album
+        }
+      })
+    });
 
   } catch (e) {
     console.log(e);
@@ -67,7 +78,11 @@ const getFeaturedPlaylists = async (accessToken) => {
         limit: 50
       }
     });
-    return r.data;
+    return {
+      name: 'Featured Playlists',
+      description: 'What are others listening to.',
+      data: r.data.playlists.items
+    };
 
   } catch (e) {
     console.log(e);
@@ -104,7 +119,10 @@ const getDefaultPlaylists = async (accessToken) => {
     const k = r.data.playlists.items.filter(e => {
       if (e.name.indexOf('Daily') > -1 && e.owner.display_name.indexOf('Spotify') > -1) return e;
     });
-    return k;
+    return ({
+      name: 'Default Playlists',
+      data: k
+    });
 
   } catch (e) {
     console.log(e);
@@ -121,7 +139,11 @@ const getNewReleases = async (accessToken) => {
         limit: 14
       }
     });
-    return r.data.albums.items;
+    return ({
+      name: 'New Releases',
+      description: 'What \'s Hot',
+      data: r.data.albums.items
+    });
 
   } catch (e) {
     console.log(e);
