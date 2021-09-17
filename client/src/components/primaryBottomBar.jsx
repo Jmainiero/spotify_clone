@@ -25,6 +25,7 @@ const PrimaryBottomBar = ({ accessToken, trackUri }) => {
           play={play}
           uris={selectedSong}
           token={accessToken}
+          name="Kappy's Web Player"
           styles={{
             activeColor: '#fff',
             bgColor: '#181818',

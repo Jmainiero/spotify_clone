@@ -9,9 +9,7 @@ export default function masterMainView({ data, handleClick }) {
       <div className='recommended'>
         <div className='recommended--title'>
           <h1>{list.name}</h1>
-          {list.description ? (
-            <h4>Get better recommendations the more you listen.</h4>
-          ) : null}
+          {list.description ? <h4>{list.description}</h4> : null}
         </div>
         <div className='recommended--carousel'>
           <Slider {...slideShowSettings.settings}>

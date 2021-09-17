@@ -141,7 +141,7 @@ const getNewReleases = async (accessToken) => {
     });
     return ({
       name: 'New Releases',
-      description: 'What \'s Hot',
+      description: 'What\'s Trending',
       data: r.data.albums.items
     });
 

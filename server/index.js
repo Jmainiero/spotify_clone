@@ -70,9 +70,10 @@ app.post("/refresh", (req, res) => {
 
 app.post('/master', async (req, res) => {
   const r = [];
-  r.push(await apiCalls.getRecentlyPlayed(req.body.access_token));
-  r.push(await apiCalls.getFeaturedPlaylists(req.body.access_token));
+  r.push(await apiCalls.getRecommended(req.body.access_token));
   r.push(await apiCalls.getNewReleases(req.body.access_token));
+  r.push(await apiCalls.getFeaturedPlaylists(req.body.access_token));
+  r.push(await apiCalls.getRecentlyPlayed(req.body.access_token));
   res.status(200).send(r);
 });
 
