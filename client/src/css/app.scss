@@ -83,6 +83,30 @@ a {
   }
 }
 
+.user-bar {
+  // position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  top: 0;
+  right: 0;
+
+  & p,
+  &__img {
+    flex-direction: column;
+  }
+
+  &__img {
+    flex-basis: 50px;
+
+    & img {
+      width: 100%;
+      border-radius: 100%;
+    }
+  }
+
+}
+
 .sidebar {
   background-color: #000;
   max-height: 100%;
@@ -167,9 +191,9 @@ a {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, .3);
+  background: rgba(255, 255, 255, .2);
 }
 
 ::-webkit-scrollbar-track {

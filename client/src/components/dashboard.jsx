@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useAuth from '../components/auth';
 import SpotifyWebApi from 'spotify-web-api-node';
+import UserBar from '../components/userBar';
 import Sidebar from '../components/sidebar/sidebar';
 import BottomBar from '../components/primaryBottomBar';
 import MainView from '../components/mainview/mainView';
@@ -11,6 +12,7 @@ export default function Dashboard({ code }) {
     clientId: '8b945ef10ea24755b83ac50cede405a0',
   });
   const accessToken = useAuth(code);
+  const [userDetails, setUserDetails] = useState();
   const [playlists, setPlaylists] = useState();
   const [trackUri, setTrackUri] = useState();
   const [master, setMaster] = useState();
@@ -28,6 +30,17 @@ export default function Dashboard({ code }) {
   useEffect(() => {
     if (!accessToken) return;
 
+    const fetchUser = async (user) => {
+      try {
+        const r = await axios.post('http://localhost:8888/fetchUser', {
+          access_token: accessToken,
+        });
+        setUserDetails(r.data);
+      } catch (e) {
+        throw e;
+      }
+    };
+
     const fetchPlaylists = async () => {
       try {
         const r = await axios.post('http://localhost:8888/playlists', {
@@ -44,19 +57,19 @@ export default function Dashboard({ code }) {
         const r = await axios.post('http://localhost:8888/master', {
           access_token: accessToken,
         });
-        console.log(r.data);
         setMaster(r.data);
       } catch (e) {
         throw e;
       }
     };
+    fetchUser();
     masterFunction();
     fetchPlaylists();
   }, [accessToken]);
   return (
     <div>
+      {userDetails && master ? <UserBar userDetails={userDetails} /> : null}
       <Sidebar playlists={playlists} />
-      {console.log(master)}
       {master ? <MainView master={master} handleClick={handleClick} /> : null}
       {accessToken ? (
         <BottomBar accessToken={accessToken} trackUri={trackUri} />

@@ -3,6 +3,7 @@ import SideNavPlaylist from './sideNavPlaylist';
 import Logo from '../../assests/Spotify_Logo_CMYK_White.png';
 
 const sidebar = ({ playlists }) => {
+  console.log(playlists);
   return (
     <div className='sidebar'>
       <img src={Logo} id='logo' alt='logo' />
