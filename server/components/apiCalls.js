@@ -1,5 +1,22 @@
 const axios = require('axios');
 
+const getUserDetails = async (accessToken) => {
+  try {
+    const r = await axios.get('https://api.spotify.com/v1/me', {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+
+    });
+    console.log(r.data);
+    return r.data;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const getAllPlaylists = async (accessToken) => {
   try {
     const r = await axios.get('https://api.spotify.com/v1/me/playlists', {
@@ -165,6 +182,7 @@ const getTopCategories = async (accessToken) => {
 };
 
 module.exports = {
+  getUserDetails,
   getAllPlaylists,
   getRecommended,
   getRecentlyPlayed,

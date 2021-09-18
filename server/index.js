@@ -77,6 +77,11 @@ app.post('/master', async (req, res) => {
   res.status(200).send(r);
 });
 
+app.post('/fetchUser', async (req, res) => {
+  const r = await apiCalls.getUserDetails(req.body.access_token);
+  res.status(200).send(r);
+})
+
 app.post('/playlists', async (req, res) => {
   const r = await apiCalls.getAllPlaylists(req.body.access_token);
   res.status(200).send(r);
