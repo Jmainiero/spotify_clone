@@ -1,0 +1,4 @@
+export const ActionTypes = {
+  SET_PLAYLIST: "SET_PLAYLISTS",
+  SELECTED_PLAYLIST: "SELECTED_PLAYLIST",
+};

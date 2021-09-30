@@ -68,7 +68,7 @@ const getRecentlyPlayed = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        limit: 14
+        limit: 50
       }
     });
     return ({
@@ -113,7 +113,7 @@ const getTopArtistsTracks = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        limit: 14
+        limit: 50
       }
     });
     return r.data.items;
@@ -153,7 +153,7 @@ const getNewReleases = async (accessToken) => {
         'Authorization': 'Bearer ' + accessToken
       },
       params: {
-        limit: 14
+        limit: 50
       }
     });
     return ({
