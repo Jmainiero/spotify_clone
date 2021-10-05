@@ -1,7 +1,6 @@
 import Slider from 'react-slick';
 const slideShowSettings = require('../slideShowSettings');
 export default function recentlyPlayed({ recentlyPlayed, handleClick }) {
-  console.log('Recently Played', recentlyPlayed);
   return (
     <div className='recommended'>
       <div className='recommended--title'>

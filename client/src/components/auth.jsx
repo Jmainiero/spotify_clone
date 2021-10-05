@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Redirect } from 'react-router-dom';
+import { setAuth } from '../redux/actions/authActions';
 import axios from 'axios';
 
-export default function useAuth(code) {
+export default function useAuth() {
+  const code = useSelector((state) => state.auth.refreshTK);
   const [accessToken, setAccessToken] = useState();
   const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     axios
@@ -15,7 +21,8 @@ export default function useAuth(code) {
         setAccessToken(res.data.accessToken);
         setRefreshToken(res.data.refreshToken);
         setExpiresIn(res.data.expiresIn);
-        window.history.pushState({}, null, '/');
+        dispatch(setAuth(res.data.accessToken));
+        window.history.pushState({}, null, '/home');
       })
       .catch((er) => {
         window.location = '/';

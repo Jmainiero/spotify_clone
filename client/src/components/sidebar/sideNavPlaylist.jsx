@@ -1,13 +1,20 @@
-const sideNavPlaylist = ({ playlists }) => {
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+const SideNavPlaylist = () => {
+  const playlists = useSelector((state) => state.sidebar.sidebarPlaylists);
   return (
     <div className='sideNavPlaylist'>
       <div className='scrollable'>
         <ul>
           {playlists.map((playlist, index) => {
             return (
-              <li key={index}>
-                <a href={playlist.id}>{playlist.name}</a>
-              </li>
+              <Link to={`/playlist/${playlist.id}`}>
+                <li key={index}>
+                  <p className='sideNavPlaylist--p'>{playlist.name}</p>
+                </li>
+              </Link>
             );
           })}
         </ul>
@@ -16,4 +23,4 @@ const sideNavPlaylist = ({ playlists }) => {
   );
 };
 
-export default sideNavPlaylist;
+export default SideNavPlaylist;

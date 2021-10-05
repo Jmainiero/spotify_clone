@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { jsx } from '@emotion/react';
 import RingLoader from 'react-spinners/RingLoader';
-import useAuth from '../components/auth';
 import SpotifyWebApi from 'spotify-web-api-node';
 import UserBar from '../components/userBar';
 import Sidebar from '../components/sidebar/sidebar';
@@ -11,12 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPlaylists } from '../redux/actions/sidebarActions';
 const axios = require('axios');
 
-export default function Dashboard({ code }) {
+export default function Dashboard() {
   const spotifyApi = new SpotifyWebApi({
     clientId: '8b945ef10ea24755b83ac50cede405a0',
   });
   const dispatch = useDispatch();
-  const accessToken = useAuth(code);
+  const accessToken = useSelector((state) => state.auth.authTK);
   const [userDetails, setUserDetails] = useState();
   // const [playlists, setPlaylists] = useState();
   const [trackUri, setTrackUri] = useState();
@@ -76,7 +74,7 @@ export default function Dashboard({ code }) {
     <div>
       {!userDetails && !master ? <RingLoader color={'#1ED760'} /> : null}
       {userDetails && master ? <UserBar userDetails={userDetails} /> : null}
-      {/* <Sidebar playlists={playlists} /> */}
+      <Sidebar />
       {master ? <MainView master={master} handleClick={handleClick} /> : null}
       {accessToken ? (
         <BottomBar accessToken={accessToken} trackUri={trackUri} />

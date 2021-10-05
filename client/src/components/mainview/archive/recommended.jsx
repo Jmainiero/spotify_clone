@@ -5,7 +5,6 @@ import { AssignmentTurnedInOutlined } from '@material-ui/icons';
 
 const slideShowSettings = require('../slideShowSettings');
 export default function getRecommended({ recommended, handleClick }) {
-  console.log('Recommened Tracks', recommended);
   return (
     <div className='recommended'>
       <div className='recommended--title'>

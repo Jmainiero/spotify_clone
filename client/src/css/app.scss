@@ -178,6 +178,11 @@ a {
     scrollbar-color: red yellow;
 
   }
+
+  &--p {
+    margin: inherit;
+    font-size: inherit;
+  }
 }
 
 .bottom-bar {
