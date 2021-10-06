@@ -16,22 +16,23 @@ function App() {
     userAuth();
     dispatch(setRefresh(new URLSearchParams(window.location.search).get('code')));
   }
-  const code = useSelector((state) => state.auth.refreshTK);
+  const refreshToken = useSelector((state) => state.auth.refreshTK);
+  const accessToken = useSelector((state) => state.auth.accessToken);
   return (
-    <div className='App'>
-      <Router>
+    <Router>
+      <div className='App'>
         <Switch>
           {new URLSearchParams(window.location.search).get('code') ?
-            <Route search='?code' component={Dashboard} /> : null
+            <Route search='?code'> <Dashboard /> </Route> : console.log('Defaulting')
           }
-          <Route path="/playlist/:playlistid" exact component={ViewPlaylist} /> :
-          <Route path='/home' component={Dashboard} />
-          <Route path="/" component={Login} />
+          <Route path="/playlist" component={ViewPlaylist} /> :
+          <Route path='/home'> <Dashboard /> </Route>
+          <Route path="/" exact component={Login} />
           <Route>404 Not found</Route>
         </Switch>
         <Footer />
-      </Router>
-    </div >
+      </div >
+    </Router>
   );
 }
 

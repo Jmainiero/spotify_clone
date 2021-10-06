@@ -22,7 +22,7 @@ export default function useAuth() {
         setRefreshToken(res.data.refreshToken);
         setExpiresIn(res.data.expiresIn);
         dispatch(setAuth(res.data.accessToken));
-        window.history.pushState({}, null, '/home');
+        // window.history.pushState({}, null, '/home');
       })
       .catch((er) => {
         window.location = '/';

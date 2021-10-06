@@ -10,8 +10,8 @@ const SideNavPlaylist = () => {
         <ul>
           {playlists.map((playlist, index) => {
             return (
-              <Link to={`/playlist/${playlist.id}`}>
-                <li key={index}>
+              <Link to={{ pathname: `/playlist/${playlist.id}` }} key={index}>
+                <li>
                   <p className='sideNavPlaylist--p'>{playlist.name}</p>
                 </li>
               </Link>
