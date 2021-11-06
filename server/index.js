@@ -22,7 +22,6 @@ app.post("/login", (req, res) => {
       clientSecret: process.env.CLIENT_SECRET,
     });
     const code = req.body.code;
-    // console.log(code);
 
     var authorizeURL = spotifyApi.createAuthorizeURL(scopes);
     // console.log(authorizeURL);
@@ -77,6 +76,10 @@ app.post('/master', async (req, res) => {
   res.status(200).send(r);
 });
 
+app.post('/fetchPlaylist', async (req, res) => {
+  const r = await apiCalls.getPlaylist(req.body.access_token, req.body.playlistId);
+  res.status(200).send(r);
+})
 app.post('/fetchUser', async (req, res) => {
   const r = await apiCalls.getUserDetails(req.body.access_token);
   res.status(200).send(r);

@@ -71,9 +71,9 @@ export default function Dashboard() {
     fetchPlaylists();
   }, [accessToken]);
   return (
-    <div>
+    <div className='primary-app'>
       {!userDetails && !master ? <RingLoader color={'#1ED760'} /> : null}
-      {userDetails && master ? <UserBar userDetails={userDetails} /> : null}
+      {/* {userDetails && master ? <UserBar userDetails={userDetails} /> : null} */}
       <Sidebar />
       {master ? <MainView master={master} handleClick={handleClick} /> : null}
       {accessToken ? (

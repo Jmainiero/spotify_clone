@@ -61,5 +61,5 @@ export default function masterMainView({ data, handleClick }) {
       </div>
     );
   });
-  return r;
+  return <div className='master-view'>{r}</div>;
 }

@@ -9,7 +9,7 @@ export const setPlaylists = (playlists) => {
 
 export const selectedPlaylist = (playlist) => {
   return {
-    type: ActionTypes.SELECT_PLAYLIST,
+    type: ActionTypes.SELECTED_PLAYLIST,
     payload: playlist,
   };
 };

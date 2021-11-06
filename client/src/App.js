@@ -7,14 +7,13 @@ import { setRefresh } from './redux/actions/authActions';
 import Footer from './components/footer';
 import Login from './components/login';
 import Dashboard from './components/dashboard';
-import ViewPlaylist from './components/viewPlaylist';
 import userAuth from './components/auth';
 
 function App() {
   const dispatch = useDispatch();
   if (new URLSearchParams(window.location.search).get('code')) {
-    userAuth();
     dispatch(setRefresh(new URLSearchParams(window.location.search).get('code')));
+    userAuth();
   }
   const refreshToken = useSelector((state) => state.auth.refreshTK);
   const accessToken = useSelector((state) => state.auth.accessToken);
@@ -22,17 +21,14 @@ function App() {
     <Router>
       <div className='App'>
         <Switch>
-          {new URLSearchParams(window.location.search).get('code') ?
-            <Route search='?code'> <Dashboard /> </Route> : console.log('Defaulting')
-          }
-          <Route path="/playlist" component={ViewPlaylist} /> :
           <Route path='/home'> <Dashboard /> </Route>
+          <Route path='/playlist/:playlistId'> <Dashboard /> </Route>
           <Route path="/" exact component={Login} />
-          <Route>404 Not found</Route>
+          {/* <Route>404 Not found</Route> */}
         </Switch>
         <Footer />
       </div >
-    </Router>
+    </Router >
   );
 }
 

@@ -9,7 +9,6 @@ const getUserDetails = async (accessToken) => {
       },
 
     });
-    console.log(r.data);
     return r.data;
 
   } catch (e) {
@@ -180,6 +179,21 @@ const getTopCategories = async (accessToken) => {
     console.log(e);
   }
 };
+const getPlaylist = async (accessToken, playlistId) => {
+  try {
+    const r = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    console.log(r);
+    return r.data;
+
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   getUserDetails,
@@ -190,5 +204,6 @@ module.exports = {
   getTopArtistsTracks,
   getDefaultPlaylists,
   getNewReleases,
-  getTopCategories
+  getTopCategories,
+  getPlaylist
 };

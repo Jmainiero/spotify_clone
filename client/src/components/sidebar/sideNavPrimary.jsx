@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 const sideNavPrimary = () => {
@@ -5,12 +6,16 @@ const sideNavPrimary = () => {
     <div className='sideNavPrimary'>
       <ul>
         <li>
-          <HomeIcon fontSize='medium' />
-          <a href='Home'>Home</a>
+          <Link to='/home'>
+            <HomeIcon fontSize='medium' />
+            <p>Home</p>
+          </Link>
         </li>
         <li>
-          <SearchIcon fontSize='medium' />
-          <a href='Browse'>Browse</a>
+          <Link to='/browse'>
+            <SearchIcon fontSize='medium' />
+            <p>Browse</p>
+          </Link>
         </li>
       </ul>
     </div>
