@@ -119,7 +119,7 @@ a {
   font-weight: 400;
   color: #b3b3b3;
   overflow: hidden;
-  flex: 0.2;
+  flex: 0.15;
 
   & ul {
     padding: 0 0 0 0.7rem;
@@ -222,10 +222,17 @@ a {
 }
 
 .main-view {
+  height: 92vh;
   font-size: 0.8rem !important;
-  flex: 0.8;
+  flex: 0.85;
   overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
+
+
 
 .master-view {
   padding: 3rem;

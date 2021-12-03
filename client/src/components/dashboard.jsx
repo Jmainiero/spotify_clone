@@ -72,7 +72,11 @@ export default function Dashboard() {
   }, [accessToken]);
   return (
     <div className='primary-app'>
-      {!userDetails && !master ? <RingLoader color={'#1ED760'} /> : null}
+      {!userDetails && !master ? (
+        <div className='main-view'>
+          <RingLoader color={'#1ED760'} />
+        </div>
+      ) : null}
       {/* {userDetails && master ? <UserBar userDetails={userDetails} /> : null} */}
       <Sidebar />
       {master ? <MainView master={master} handleClick={handleClick} /> : null}
