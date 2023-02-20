@@ -1,36 +1,42 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import './css/app.scss';
+import { useEffect } from 'react';
+import './sass/_main.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { setRefresh } from './redux/actions/authActions';
-import Footer from './components/footer';
+import { setAuthToken } from './redux/actions/authActions';
 import Login from './components/login';
 import Dashboard from './components/dashboard';
-import ViewPlaylist from './components/viewPlaylist';
-import userAuth from './components/auth';
+import UseAuth from './components/auth';
 
 function App() {
   const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.auth.accessTK);
+  const authTK = useSelector((state) => state.auth.accessTK);
+  useEffect(() => {
+    
+    if (!authTK) {
+      <Redirect to="/login" />
+    }
+  }, [], UseAuth())
+
   if (new URLSearchParams(window.location.search).get('code')) {
-    userAuth();
-    dispatch(setRefresh(new URLSearchParams(window.location.search).get('code')));
+    console.log('Hitting 24')
+    dispatch(setAuthToken(new URLSearchParams(window.location.search).get('code')));
+    console.log('25')
+    // userAuth();
   }
-  const refreshToken = useSelector((state) => state.auth.refreshTK);
-  const accessToken = useSelector((state) => state.auth.accessToken);
   return (
     <Router>
       <div className='App'>
         <Switch>
-          {new URLSearchParams(window.location.search).get('code') ?
-            <Route search='?code'> <Dashboard /> </Route> : console.log('Defaulting')
+          <Route path="/home" query="code"><Redirect to="/"/></Route>
+          <Route path="/login" exact component={Login} />
+          {accessToken ?
+            <Route path="/" > <Dashboard /> </Route> : <Login />
           }
-          <Route path="/playlist" component={ViewPlaylist} /> :
-          <Route path='/home'> <Dashboard /> </Route>
-          <Route path="/" exact component={Login} />
           <Route>404 Not found</Route>
         </Switch>
-        <Footer />
       </div >
     </Router>
   );

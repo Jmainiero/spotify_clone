@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import RingLoader from 'react-spinners/RingLoader';
-import SpotifyWebApi from 'spotify-web-api-node';
 import UserBar from '../components/userBar';
 import Sidebar from '../components/sidebar/sidebar';
 import BottomBar from '../components/primaryBottomBar';
@@ -10,13 +9,9 @@ import { setPlaylists } from '../redux/actions/sidebarActions';
 const axios = require('axios');
 
 export default function Dashboard() {
-  const spotifyApi = new SpotifyWebApi({
-    clientId: '8b945ef10ea24755b83ac50cede405a0',
-  });
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.auth.authTK);
+  const accessToken = useSelector((state) => state.auth.accessTK);
   const [userDetails, setUserDetails] = useState();
-  // const [playlists, setPlaylists] = useState();
   const [trackUri, setTrackUri] = useState();
   const [master, setMaster] = useState();
 
@@ -27,48 +22,26 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!accessToken) return;
-    spotifyApi.setAccessToken(accessToken);
-  }, [accessToken]);
 
-  useEffect(() => {
-    if (!accessToken) return;
+    (async () => {
+        try {
+          const user = await axios.post('/fetchUser', {
+            access_token: accessToken,
+          });
+          setUserDetails(user.data);
+          const playlist = await axios.post('/playlists', {
+            access_token: accessToken,
+          });
+          dispatch(setPlaylists(playlist.data));
+          const master = await axios.post('/master', {
+            access_token: accessToken,
+          });
+          setMaster(master.data);
+        } catch (e) {
+          throw e;
+        }
+    })()
 
-    const fetchUser = async (user) => {
-      try {
-        const r = await axios.post('http://localhost:8888/fetchUser', {
-          access_token: accessToken,
-        });
-        setUserDetails(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
-
-    const fetchPlaylists = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/playlists', {
-          access_token: accessToken,
-        });
-        dispatch(setPlaylists(r.data));
-        // setPlaylists(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
-
-    const masterFunction = async () => {
-      try {
-        const r = await axios.post('http://localhost:8888/master', {
-          access_token: accessToken,
-        });
-        setMaster(r.data);
-      } catch (e) {
-        throw e;
-      }
-    };
-    fetchUser();
-    masterFunction();
-    fetchPlaylists();
   }, [accessToken]);
   return (
     <div>

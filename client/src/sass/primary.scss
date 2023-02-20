@@ -1,0 +1,59 @@
+body {
+    margin: 0 !important;
+}
+
+.App {
+    background-color: #121212;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#logo {
+    width: 55%;
+    padding: 1.5rem 1rem 1rem 1rem;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer {
+    position: absolute;
+    z-index: 9999;
+    bottom: 0;
+    background: #181818;
+    width: 100%;
+    text-align: center;
+    height: 35px;
+    font-size: 0.8rem;
+
+    & a {
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s;
+
+
+        &:hover {
+            font-size: 120%;
+            letter-spacing: 5px;
+        }
+    }
+
+    & p {
+        display: inline-block;
+    }
+
+    & #desktop-only {
+        position: absolute;
+        right: 2vw;
+        color: red;
+        font-size: 0.7rem;
+    }
+}

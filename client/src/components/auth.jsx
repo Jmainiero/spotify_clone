@@ -1,52 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Redirect } from 'react-router-dom';
-import { setAuth } from '../redux/actions/authActions';
+import { setRefreshToken, setExpiration, setAccessToken } from '../redux/actions/authActions';
 import axios from 'axios';
 
-export default function useAuth() {
-  const code = useSelector((state) => state.auth.refreshTK);
-  const [accessToken, setAccessToken] = useState();
-  const [refreshToken, setRefreshToken] = useState();
-  const [expiresIn, setExpiresIn] = useState();
+const UseAuth = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-
+  const code = useSelector((state) => state.auth.authTK);
+  const refreshToken = useSelector((state) => state.auth.refreshTK);
+  const accessToken = useSelector((state) => state.auth.accessTK);
+  const expiresIn = useSelector((state) => state.auth.expiration);
+  
   useEffect(() => {
-    axios
-      .post('http://localhost:8888/login', {
-        code,
-      })
-      .then((res) => {
-        setAccessToken(res.data.accessToken);
-        setRefreshToken(res.data.refreshToken);
-        setExpiresIn(res.data.expiresIn);
-        dispatch(setAuth(res.data.accessToken));
-        // window.history.pushState({}, null, '/home');
-      })
-      .catch((er) => {
-        window.location = '/';
-      });
-  }, [code]);
-
-  useEffect(() => {
-    if (!refreshToken || !expiresIn) return;
-    const interval = setInterval(() => {
+    console.table([code, refreshToken, accessToken, expiresIn])
+    if ((!refreshToken && !expiresIn && !accessToken) && !!code) {
+      console.log('Running Token')
       axios
-        .post('http://localhost:8888/refresh', {
-          refreshToken,
+        .post('/token', {
+          code: code,
         })
         .then((res) => {
-          setAccessToken(res.data.accessToken);
-          setExpiresIn(res.data.expiresIn);
+          dispatch(setRefreshToken(res.data.refresh_token))
+          dispatch(setAccessToken(res.data.access_token))
+          dispatch(setExpiration(res.data.expires_in))
+          console.log(res.data)
         })
-        .catch(() => {
-          window.location = '/';
+        .catch((e) => {
+          console.error(e)
         });
-    }, (expiresIn - 60) * 1000);
-
-    return () => clearInterval(interval);
-  }, [refreshToken, expiresIn]);
-
-  return accessToken;
+    } else  {
+      // axios
+      //   .post('http://localhost:8888/refresh', {
+      //     refreshToken: refreshToken,
+      //   })
+      //   .then((res) => {
+      //     setAccessToken(res.data.accessToken);
+      //     setExpiresIn(res.data.expiresIn);
+      //   })
+      //   .catch((e) => {
+      //     console.error(e)
+      //   });
+    }
+  }, [refreshToken, expiresIn, code]);
+  return accessToken
 }
+
+export default UseAuth
