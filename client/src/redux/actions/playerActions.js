@@ -6,3 +6,9 @@ export const setPlayer = (song) => {
         payload: song,
     };
 };
+export const setPlaying = (state) => {
+    return {
+        type: ActionTypes.SET_PLAYING,
+        payload: state,
+    };
+};

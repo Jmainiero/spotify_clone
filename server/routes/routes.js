@@ -11,7 +11,10 @@ const { getUserDetails,
     getDefaultPlaylists,
     getNewReleases,
     getTopCategories,
-    getPlayerState } = require("../services/services");
+    getPlayerState,
+    changePlayerState,
+    skipToState } = require("../services/services");
+
 
 router.get("/queryPokemon", async (req, res, next) => {
     try {
@@ -210,4 +213,35 @@ router.post('/getPlayerState', async (req, res, next) => {
         return next(new Error(e));
     }
 });
+router.post('/changePlayerState', async (req, res, next) => {
+    try {
+        console.log(req.body.spotifyURI)
+        const { state, spotifyURI } = req.body
+        if (!state) return next('Please Enter a valid player state.'); 
+        await changePlayerState(req.headers.authorization.split('Bearer')[1].trim(), state, spotifyURI);
+        const getPlayerDetails = await getPlayerState(req.headers.authorization.split('Bearer')[1]); 
+        res.status(200).json({
+            getPlayerDetails
+        });
+    } catch (e) {
+        console.log(e)
+        return next(new Error(e));
+    }
+});
+router.post('/skipToState', async (req, res, next) => {
+    try {
+        const { state } = req.body
+        if (!state) return next('Please Enter a valid player state.'); 
+        await skipToState(req.headers.authorization.split('Bearer')[1].trim(), state);
+        const getPlayerDetails = await getPlayerState(req.headers.authorization.split('Bearer')[1]); 
+        res.status(200).json({
+            getPlayerDetails
+        });
+    } catch (e) {
+        console.log(e)
+        return next(new Error(e));
+    }
+});
 module.exports = router;
+
+

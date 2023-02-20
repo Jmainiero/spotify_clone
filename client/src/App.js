@@ -15,10 +15,10 @@ function App() {
   const authTK = useSelector((state) => state.auth.accessTK);
   useEffect(() => {
     
-    if (!authTK) {
+    if (!accessToken) {
       <Redirect to="/login" />
     }
-  }, [], UseAuth())
+  }, [], UseAuth()) 
 
   if (new URLSearchParams(window.location.search).get('code')) {
     console.log('Hitting 24')

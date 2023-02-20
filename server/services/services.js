@@ -188,12 +188,11 @@ const getPlayerState = async (accessToken) => {
                 'Authorization': 'Bearer ' + accessToken
             }
         });
-        
         return {
             current_duration: r.data.progress_ms,
             song_length: r.data.item.duration_ms,
             song_title: r.data.item.name,
-            song_artist: r.data.item.artists.name,
+            song_artist: r.data.item.artists[0].name,
             song_cover: r.data.item.album.images[0].url
         };
 
@@ -201,10 +200,23 @@ const getPlayerState = async (accessToken) => {
         console.log(e);
     }
 };
-const changePlayerState = async (accessToken, playerType) => {
+const changePlayerState = async (accessToken, state, spotifyURI = null) => {
     try {
-        console.log('Accepting Request')
-        const r = await axios.put(`https://api.spotify.com/v1/me/player/${playerType}`, {
+        const r = await axios.put(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9&${spotifyURI}`, {}, {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        return r
+
+    } catch (e) {
+        console.log(e);
+    }
+};
+const skipToState = async (accessToken, state, spotifyURI = null) => {
+    try {
+        const r = await axios.post(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`, {}, {
             headers: {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + accessToken
@@ -227,5 +239,7 @@ module.exports = {
     getDefaultPlaylists,
     getNewReleases,
     getTopCategories,
-    getPlayerState
+    getPlayerState,
+    changePlayerState,
+    skipToState
 };

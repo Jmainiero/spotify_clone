@@ -6,6 +6,7 @@ import BottomBar from '../components/primaryBottomBar';
 import MainView from '../components/mainview/mainView';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPlaylists } from '../redux/actions/sidebarActions';
+import { setPlayer, setPlaying } from '../redux/actions/playerActions';
 const axios = require('axios');
 
 export default function Dashboard() {
@@ -18,6 +19,9 @@ export default function Dashboard() {
   const handleClick = (e) => {
     e.preventDefault();
     setTrackUri(e.currentTarget.href);
+    console.log(e.currentTarget.href)
+    dispatch(setPlayer(e.currentTarget.href));
+    dispatch(setPlaying(true))
   };
 
   useEffect(() => {
@@ -49,9 +53,7 @@ export default function Dashboard() {
       {userDetails && master ? <UserBar userDetails={userDetails} /> : null}
       <Sidebar />
       {master ? <MainView master={master} handleClick={handleClick} /> : null}
-      {accessToken ? (
-        <BottomBar accessToken={accessToken} trackUri={trackUri} />
-      ) : null}
+        <BottomBar/>
     </div>
   );
 }
