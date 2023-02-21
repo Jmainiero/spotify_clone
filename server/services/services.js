@@ -12,7 +12,7 @@ const getUserDetails = async (accessToken) => {
         return r.data;
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
 
@@ -30,7 +30,7 @@ const getAllPlaylists = async (accessToken) => {
         return r.data.items;
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
 
@@ -56,9 +56,10 @@ const getRecommended = async (accessToken) => {
             })
         });
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getRecentlyPlayed = async (accessToken) => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/player/recently-played', {
@@ -80,9 +81,10 @@ const getRecentlyPlayed = async (accessToken) => {
         });
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getFeaturedPlaylists = async (accessToken) => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/browse/featured-playlists', {
@@ -101,9 +103,10 @@ const getFeaturedPlaylists = async (accessToken) => {
         };
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getTopArtistsTracks = async (accessToken) => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/top/artists', {
@@ -118,9 +121,10 @@ const getTopArtistsTracks = async (accessToken) => {
         return r.data.items;
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getDefaultPlaylists = async (accessToken) => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/search?q=Daily%20Mix', {
@@ -141,9 +145,10 @@ const getDefaultPlaylists = async (accessToken) => {
         });
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getNewReleases = async (accessToken) => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
@@ -162,9 +167,10 @@ const getNewReleases = async (accessToken) => {
         });
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getTopCategories = async (accessToken) => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/browse/categories', {
@@ -176,12 +182,12 @@ const getTopCategories = async (accessToken) => {
         return r.data.categories.items;
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const getPlayerState = async (accessToken) => {
     try {
-        console.log('Accepting Request')
         const r = await axios.get('https://api.spotify.com/v1/me/player/', {
             headers: {
                 'Accept': 'application/json',
@@ -196,9 +202,10 @@ const getPlayerState = async (accessToken) => {
             song_cover: r.data.item.album.images[0].url
         };
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const changePlayerState = async (accessToken, state, spotifyURI = '') => {
     try {
         const config = {
@@ -223,9 +230,10 @@ const changePlayerState = async (accessToken, state, spotifyURI = '') => {
         return r
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
+
 const skipToState = async (accessToken, state, spotifyURI = null) => {
     try {
         const r = await axios.post(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`, {}, {
@@ -237,7 +245,7 @@ const skipToState = async (accessToken, state, spotifyURI = null) => {
         return r
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRefreshToken, setExpiration, setAccessToken } from '../redux/actions/authActions';
 import axios from 'axios';
@@ -9,11 +9,10 @@ const UseAuth = () => {
   const refreshToken = useSelector((state) => state.auth.refreshTK);
   const accessToken = useSelector((state) => state.auth.accessTK);
   const expiresIn = useSelector((state) => state.auth.expiration);
-  
+
   useEffect(() => {
     console.table([code, refreshToken, accessToken, expiresIn])
     if ((!refreshToken && !expiresIn && !accessToken) && !!code) {
-      console.log('Running Token')
       axios
         .post('/token', {
           code: code,
@@ -21,24 +20,26 @@ const UseAuth = () => {
         .then((res) => {
           dispatch(setRefreshToken(res.data.refresh_token))
           dispatch(setAccessToken(res.data.access_token))
-          dispatch(setExpiration(res.data.expires_in))
-          console.log(res.data)
+          dispatch(setExpiration(Date.now() + 3000000)) //For testing, set it to minus to subtract an hour.
         })
         .catch((e) => {
           console.error(e)
         });
-    } else  {
-      // axios
-      //   .post('http://localhost:8888/refresh', {
-      //     refreshToken: refreshToken,
-      //   })
-      //   .then((res) => {
-      //     setAccessToken(res.data.accessToken);
-      //     setExpiresIn(res.data.expiresIn);
-      //   })
-      //   .catch((e) => {
-      //     console.error(e)
-      //   });
+    } else if ((refreshToken && expiresIn && accessToken && code) && Date.now() >= expiresIn) {
+      axios
+        .post('/refresh', {
+          refreshToken: refreshToken,
+        })
+        .then((res) => {
+          if (res.data._access_token) {
+            console.log('Setting new token')
+            dispatch(setAccessToken(res.data.access_token))
+            dispatch(setExpiration(Date.now() + 3000000))
+          }
+        })
+        .catch((e) => {
+          console.error(e)
+        });
     }
   }, [refreshToken, expiresIn, code]);
   return accessToken

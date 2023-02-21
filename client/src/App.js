@@ -12,7 +12,7 @@ import UseAuth from './components/auth';
 function App() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.accessTK);
-  const authTK = useSelector((state) => state.auth.accessTK);
+  const expiresIn = useSelector((state) => state.auth.expiration);
   useEffect(() => {
     
     if (!accessToken) {
@@ -21,9 +21,7 @@ function App() {
   }, [], UseAuth()) 
 
   if (new URLSearchParams(window.location.search).get('code')) {
-    console.log('Hitting 24')
     dispatch(setAuthToken(new URLSearchParams(window.location.search).get('code')));
-    console.log('25')
     // userAuth();
   }
   return (
@@ -32,8 +30,8 @@ function App() {
         <Switch>
           <Route path="/home" query="code"><Redirect to="/"/></Route>
           <Route path="/login" exact component={Login} />
-          {accessToken ?
-            <Route path="/" > <Dashboard /> </Route> : <Login />
+          {accessToken && Date.now() <= expiresIn?
+            <Route path="/" exact> <Dashboard /> </Route> : <Login />
           }
           <Route>404 Not found</Route>
         </Switch>

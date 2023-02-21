@@ -2,7 +2,6 @@ import React from "react";
 import { Range, getTrackBackground } from "react-range";
 
 const CostumRange = ({ value, step, min, max, onChange }) => {
-    let state = { values: [50] };
     return (
         <Range
             draggableTrack

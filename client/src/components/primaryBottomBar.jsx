@@ -14,18 +14,18 @@ const secondsToTime = (ms) => {
 
 const PrimaryBottomBar = () => {
   const dispatch = useDispatch()
+
   //Can be set anywhere
   const requestedSong = useSelector(state => state.player.currentSong)
   const accessToken = useSelector(state => state.auth.accessTK)
   const play = useSelector(state => state.player.playing)
-  console.log(requestedSong)
 
   //Set locally here for display purposes.
   const [albumCover, setAlbumCover] = useState('')
   const [songTitle, setSongTitle] = useState('')
   const [artist, setArtist] = useState('')
-  const [songLength, setSongLength] = useState(0)
-  const [currentDuration, setCurrentDuration] = useState(0)
+  const [songLength, setSongLength] = useState(0.001)
+  const [currentDuration, setCurrentDuration] = useState(0.001)
   const currentSong = useState(requestedSong) //Default value to what's stored in state
 
   const skipToState = (state) => {
@@ -40,7 +40,14 @@ const PrimaryBottomBar = () => {
       }
       )
       .then((res) => {
-        dispatch(setPlaying(true))
+        if (res.status === 200) {
+          dispatch(setPlaying(true))
+          setAlbumCover(res.data.getPlayerDetails.song_cover)
+          setSongTitle(res.data.getPlayerDetails.song_title)
+          setSongLength(res.data.getPlayerDetails.song_length)
+          setCurrentDuration(res.data.getPlayerDetails.current_duration)
+          setArtist(res.data.getPlayerDetails.song_artist)
+        }
       })
       .catch((e) => {
         console.error(e)
@@ -61,13 +68,14 @@ const PrimaryBottomBar = () => {
         }
         )
         .then((res) => {
-          console.log(res)
-          setAlbumCover(res.data.getPlayerDetails.song_cover)
-          setSongTitle(res.data.getPlayerDetails.song_title)
-          setSongLength(res.data.getPlayerDetails.song_length)
-          setCurrentDuration(res.data.getPlayerDetails.current_duration)
-          setArtist(res.data.getPlayerDetails.song_artist)
-          console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
+          if (res.status === 200) {
+            setAlbumCover(res.data.getPlayerDetails.song_cover)
+            setSongTitle(res.data.getPlayerDetails.song_title)
+            setSongLength(res.data.getPlayerDetails.song_length)
+            setCurrentDuration(res.data.getPlayerDetails.current_duration)
+            setArtist(res.data.getPlayerDetails.song_artist)
+            console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
+          }
         })
         .catch((e) => {
           console.error(e)
@@ -75,10 +83,10 @@ const PrimaryBottomBar = () => {
     })()
   }, [play, requestedSong])
 
-
   useEffect(() => {
     if (play === true) {
       const interval = setInterval(() => {
+        if (currentDuration === songLength) return () => clearInterval(interval);
         setCurrentDuration(ms => currentDuration + 1000);
       }, 1050);
       return () => clearInterval(interval);
@@ -125,9 +133,8 @@ const PrimaryBottomBar = () => {
               min={0}
               max={songLength || 1}
               value={currentDuration}
-            // onChange={value => value}
-
             />
+
             <div className='player_primary__bottom__bar__text'>
               {secondsToTime(songLength).toString().replace('.', ':')}
             </div>

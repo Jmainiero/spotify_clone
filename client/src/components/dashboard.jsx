@@ -13,13 +13,11 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.accessTK);
   const [userDetails, setUserDetails] = useState();
-  const [trackUri, setTrackUri] = useState();
   const [master, setMaster] = useState();
 
   const handleClick = (e) => {
     e.preventDefault();
-    setTrackUri(e.currentTarget.href);
-    console.log('Setting new link ' ,e.currentTarget.href)
+    console.log('Setting new link ', e.currentTarget.href)
     dispatch(setPlayer(e.currentTarget.href));
     dispatch(setPlaying(true))
   };
@@ -28,32 +26,31 @@ export default function Dashboard() {
     if (!accessToken) return;
 
     (async () => {
-        try {
-          const user = await axios.post('/fetchUser', {
-            access_token: accessToken,
-          });
-          setUserDetails(user.data);
-          const playlist = await axios.post('/playlists', {
-            access_token: accessToken,
-          });
-          dispatch(setPlaylists(playlist.data));
-          const master = await axios.post('/master', {
-            access_token: accessToken,
-          });
-          setMaster(master.data);
-        } catch (e) {
-          throw e;
-        }
+      try {
+        const user = await axios.post('/fetchUser', {
+          access_token: accessToken,
+        });
+        setUserDetails(user.data);
+        const playlist = await axios.post('/playlists', {
+          access_token: accessToken,
+        });
+        dispatch(setPlaylists(playlist.data));
+        const master = await axios.post('/master', {
+          access_token: accessToken,
+        });
+        setMaster(master.data);
+      } catch (e) {
+        console.error(e)
+      }
     })()
-
-  }, [accessToken]);
+  }, []);
   return (
     <div>
       {!userDetails && !master ? <RingLoader color={'#1ED760'} /> : null}
       {userDetails && master ? <UserBar userDetails={userDetails} /> : null}
       <Sidebar />
       {master ? <MainView master={master} handleClick={handleClick} /> : null}
-        <BottomBar/>
+      <BottomBar />
     </div>
   );
 }

@@ -17,19 +17,6 @@ const { getUserDetails,
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-router.get("/queryPokemon", async (req, res, next) => {
-    try {
-        const { query } = req.query;
-        console.log(`Request Query: ${query}`);
-        if (!query) return next(new Error("Invalid Query. Please Try Again"));
-
-        const r = await queryPokemon(query.toLowerCase());
-        res.json({ data: r }).status(204);
-    } catch (e) {
-        return next(new Error(e));
-    }
-});
-
 router.post("/login", (req, res, next) => {
     try {
         var scopes = ['user-read-private', 'user-read-email', 'user-library-modify', 'user-library-read', 'user-read-playback-state', 'user-modify-playback-state', 'streaming', 'playlist-read-private', 'playlist-read-collaborative', 'user-read-recently-played', 'user-top-read'];
@@ -41,7 +28,6 @@ router.post("/login", (req, res, next) => {
         const code = req.body.code;
 
         var authorizeURL = spotifyApi.createAuthorizeURL(scopes);
-        console.log('This is my test: ', spotifyApi)
         spotifyApi
             .authorizationCodeGrant(code)
             .then(data => {
@@ -65,14 +51,11 @@ router.post("/login", (req, res, next) => {
 router.post('/token', async (req, res, next) => {
     try {
         const { code } = req.body || null
-        console.log(`Gathering API Token with Authorization Code: ${code}`)
-
         const spotifyApi = new SpotifyWebApi({
             redirectUri: process.env.REDIRECT_URI,
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
         })
-        console.log(spotifyApi)
         const r = await spotifyApi.authorizationCodeGrant(code)
         res.json({
             refresh_token: r.body.refresh_token,
@@ -80,7 +63,6 @@ router.post('/token', async (req, res, next) => {
             access_token: r.body.access_token
         })
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 
@@ -99,14 +81,12 @@ router.post("/refresh", (req, res, next) => {
     spotifyApi
         .refreshAccessToken()
         .then(data => {
-            console.log(data)
             res.json({
-                accessToken: data.body.accessToken,
-                expiresIn: data.body.expiresIn,
+                accessToken: data.body.access_token,
+                expiresIn: data.body.expires_in,
             })
         })
         .catch(err => {
-            console.log(err)
             res.sendStatus(400);
             return next(new Error(e));
         })
@@ -121,7 +101,7 @@ router.post('/master', async (req, res, next) => {
         r.push(await getRecentlyPlayed(req.body.access_token));
         res.status(200).send(r);
     } catch (e) {
-
+        return next(new Error(e));
     }
 });
 
@@ -205,19 +185,19 @@ router.post('/getTopCategories', async (req, res, next) => {
         return next(new Error(e));
     }
 });
+
 router.post('/getPlayerState', async (req, res, next) => {
     try {
-        console.log(req.headers.authorization.split('Bearer')[1])
         const r = await getPlayerState(req.headers.authorization.split('Bearer')[1]);
         res.status(200).send(r);
     } catch (e) {
         return next(new Error(e));
     }
 });
+
 router.post('/changePlayerState', async (req, res, next) => {
     try {
         const { state, spotifyURI } = req.body
-        console.log(req.body)
         if (!state) return next('Please Enter a valid player state.'); 
         await changePlayerState(req.headers.authorization.split('Bearer')[1].trim(), state, spotifyURI);
         
@@ -229,16 +209,20 @@ router.post('/changePlayerState', async (req, res, next) => {
             getPlayerDetails
         });
     } catch (e) {
-        console.log(e)
+        // console.log(e)
         return next(new Error(e));
     }
 });
+
 router.post('/skipToState', async (req, res, next) => {
     try {
         const { state } = req.body
         if (!state) return next('Please Enter a valid player state.'); 
         await skipToState(req.headers.authorization.split('Bearer')[1].trim(), state);
+
+        //Delay is necessary to await allow Spotify to "Play" the track. If this is not delayed, we will not have any meta-data to return to the client.
         await delay(1000)
+        
         const getPlayerDetails = await getPlayerState(req.headers.authorization.split('Bearer')[1]); 
         res.status(200).json({
             getPlayerDetails
