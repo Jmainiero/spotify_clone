@@ -195,19 +195,31 @@ const getPlayerState = async (accessToken) => {
             song_artist: r.data.item.artists[0].name,
             song_cover: r.data.item.album.images[0].url
         };
-
     } catch (e) {
         console.log(e);
     }
 };
-const changePlayerState = async (accessToken, state, spotifyURI = null) => {
+const changePlayerState = async (accessToken, state, spotifyURI = '') => {
     try {
-        const r = await axios.put(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9&${spotifyURI}`, {}, {
+        const config = {
+            method: 'put',
             headers: {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + accessToken
             }
-        });
+        }
+
+        if (state === 'play' && spotifyURI !== '' && spotifyURI.indexOf('track') > -1) {
+            config.data = {
+                uris: [spotifyURI]
+            }
+        } else if (state === 'play' && spotifyURI !== '' && (spotifyURI.indexOf('album') > -1 || spotifyURI.indexOf('artist') > -1 )) {
+            config.data = {
+                context_uri: spotifyURI
+            }
+        }
+        console.log(config)
+        const r = await axios(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`, config)
         return r
 
     } catch (e) {

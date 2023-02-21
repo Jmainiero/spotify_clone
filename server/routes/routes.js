@@ -15,6 +15,7 @@ const { getUserDetails,
     changePlayerState,
     skipToState } = require("../services/services");
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 router.get("/queryPokemon", async (req, res, next) => {
     try {
@@ -215,10 +216,14 @@ router.post('/getPlayerState', async (req, res, next) => {
 });
 router.post('/changePlayerState', async (req, res, next) => {
     try {
-        console.log(req.body.spotifyURI)
         const { state, spotifyURI } = req.body
+        console.log(req.body)
         if (!state) return next('Please Enter a valid player state.'); 
         await changePlayerState(req.headers.authorization.split('Bearer')[1].trim(), state, spotifyURI);
+        
+        //Delay is necessary to await allow Spotify to "Play" the track. If this is not delayed, we will not have any meta-data to return to the client.
+        await delay(1000)
+
         const getPlayerDetails = await getPlayerState(req.headers.authorization.split('Bearer')[1]); 
         res.status(200).json({
             getPlayerDetails
@@ -233,6 +238,7 @@ router.post('/skipToState', async (req, res, next) => {
         const { state } = req.body
         if (!state) return next('Please Enter a valid player state.'); 
         await skipToState(req.headers.authorization.split('Bearer')[1].trim(), state);
+        await delay(1000)
         const getPlayerDetails = await getPlayerState(req.headers.authorization.split('Bearer')[1]); 
         res.status(200).json({
             getPlayerDetails

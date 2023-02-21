@@ -19,7 +19,7 @@ export default function Dashboard() {
   const handleClick = (e) => {
     e.preventDefault();
     setTrackUri(e.currentTarget.href);
-    console.log(e.currentTarget.href)
+    console.log('Setting new link ' ,e.currentTarget.href)
     dispatch(setPlayer(e.currentTarget.href));
     dispatch(setPlaying(true))
   };

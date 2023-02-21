@@ -3,33 +3,32 @@ import { setPlaying } from '../redux/actions/playerActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShuffle, faPlay, faPause, faBackward, faForward, faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react'
-import { useDispatch, useDisplay, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CostumRange from './CostumRange.js'
 
 const secondsToTime = (ms) => {
-  // console.log(ms/60000)
   const minutes = (ms / 60000).toString().split('.')[0]
   const seconds = ('0.' + (ms / 60000).toString().split('.')[1]) * 60 / 100
-  // console.log(minutes, seconds)
-  // console.log(parseFloat(parseInt(minutes)+seconds, 2).toFixed(2))
   return parseFloat(parseInt(minutes) + seconds, 2).toFixed(2)
 }
 
 const PrimaryBottomBar = () => {
   const dispatch = useDispatch()
-
-  const currentSong = useSelector(state => state.player.currentSong)
+  //Can be set anywhere
+  const requestedSong = useSelector(state => state.player.currentSong)
   const accessToken = useSelector(state => state.auth.accessTK)
   const play = useSelector(state => state.player.playing)
-  console.log(play)
-  // const [play, setPlay] = useState(false);
+  console.log(requestedSong)
+
+  //Set locally here for display purposes.
   const [albumCover, setAlbumCover] = useState('')
   const [songTitle, setSongTitle] = useState('')
   const [artist, setArtist] = useState('')
   const [songLength, setSongLength] = useState(0)
   const [currentDuration, setCurrentDuration] = useState(0)
+  const currentSong = useState(requestedSong) //Default value to what's stored in state
 
-  const skipToState = (state) =>{
+  const skipToState = (state) => {
     axios
       .post('/skipToState', {
         state: state
@@ -49,31 +48,32 @@ const PrimaryBottomBar = () => {
   }
 
   useEffect(() => {
-    if (!accessToken) return;
-    axios
-      .post('/changePlayerState', {
-        state: (play === true ? 'play' : 'pause'),
-        spotifyURI: currentSong
-      }, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + accessToken
+    (async () => {
+      await axios
+        .post('/changePlayerState', {
+          state: (play === true ? 'play' : 'pause'),
+          spotifyURI: (requestedSong !== currentSong ? requestedSong : '')
+        }, {
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + accessToken
+          }
         }
-      }
-      )
-      .then((res) => {
-        setAlbumCover(res.data.getPlayerDetails.song_cover)
-        setSongTitle(res.data.getPlayerDetails.song_title)
-        setSongLength(res.data.getPlayerDetails.song_length)
-        setCurrentDuration(res.data.getPlayerDetails.current_duration)
-        setArtist(res.data.getPlayerDetails.song_artist)
-        console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
-      })
-      .catch((e) => {
-        console.error(e)
-      });
-
-  }, [play, currentSong])
+        )
+        .then((res) => {
+          console.log(res)
+          setAlbumCover(res.data.getPlayerDetails.song_cover)
+          setSongTitle(res.data.getPlayerDetails.song_title)
+          setSongLength(res.data.getPlayerDetails.song_length)
+          setCurrentDuration(res.data.getPlayerDetails.current_duration)
+          setArtist(res.data.getPlayerDetails.song_artist)
+          console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
+        })
+        .catch((e) => {
+          console.error(e)
+        });
+    })()
+  }, [play, requestedSong])
 
 
   useEffect(() => {
