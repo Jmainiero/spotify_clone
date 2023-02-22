@@ -11,8 +11,12 @@ const UseAuth = () => {
   const expiresIn = useSelector((state) => state.auth.expiration);
 
   useEffect(() => {
-    console.table([code, refreshToken, accessToken, expiresIn])
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+    console.log(axios.defaults.headers)
+    console.table([code, refreshToken, accessToken, expiresIn, axios.defaults.headers.Authorization])
     if ((!refreshToken && !expiresIn && !accessToken) && !!code) {
+      console.log('/token')
       axios
         .post('/token', {
           code: code,
@@ -26,14 +30,16 @@ const UseAuth = () => {
           console.error(e)
         });
     } else if ((refreshToken && expiresIn && accessToken && code) && Date.now() >= expiresIn) {
+      console.log('/token')
       axios
         .post('/refresh', {
           refreshToken: refreshToken,
         })
         .then((res) => {
-          if (res.data._access_token) {
+          console.log(res)
+          if (res.data.accessToken) {
             console.log('Setting new token')
-            dispatch(setAccessToken(res.data.access_token))
+            dispatch(setAccessToken(res.data.accessToken))
             dispatch(setExpiration(Date.now() + 3000000))
           }
         })

@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const router = require("./routes/routes");
 const { port } = require("./utils/utils");
+const axios = require('axios')
 
 //Even as a test, I don't want to expose the application using Access-Control-Allow-Origin: *', so I'm opting to whitelist domains, even if its localhost.
 const whitelist = ["http://localhost:3000"]; //I'd add more domains if I had some.
@@ -17,6 +18,18 @@ const whitelist = ["http://localhost:3000"]; //I'd add more domains if I had som
 };
 app.use(cors(corsOptions));
 */
+
+app.use((req, res, next) => {
+    if (req.headers.authorization) {
+        axios.defaults.headers.common['Authorization'] = req.headers.authorization
+        axios.defaults.headers.post['Content-Type'] = 'application/json';
+        next()
+    } else {
+        return next(new Error('Catching 28'));
+    }
+
+})
+
 app.use(express.json())
 app.use("/", router);
 

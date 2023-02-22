@@ -26,19 +26,13 @@ const PrimaryBottomBar = () => {
   const [artist, setArtist] = useState('')
   const [songLength, setSongLength] = useState(0.001)
   const [currentDuration, setCurrentDuration] = useState(0.001)
-  const currentSong = useState(requestedSong) //Default value to what's stored in state
+  const [currentSong, setCurrentSong] = useState(requestedSong) //Default value to what's stored in state
 
   const skipToState = (state) => {
     axios
       .post('/skipToState', {
         state: state
-      }, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + accessToken
-        }
-      }
-      )
+      })
       .then((res) => {
         if (res.status === 200) {
           dispatch(setPlaying(true))
@@ -56,6 +50,7 @@ const PrimaryBottomBar = () => {
 
   useEffect(() => {
     (async () => {
+      console.log(requestedSong, currentSong, requestedSong !== currentSong)
       await axios
         .post('/changePlayerState', {
           state: (play === true ? 'play' : 'pause'),
@@ -74,6 +69,7 @@ const PrimaryBottomBar = () => {
             setSongLength(res.data.getPlayerDetails.song_length)
             setCurrentDuration(res.data.getPlayerDetails.current_duration)
             setArtist(res.data.getPlayerDetails.song_artist)
+            setCurrentSong(requestedSong)
             console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
           }
         })
@@ -86,7 +82,7 @@ const PrimaryBottomBar = () => {
   useEffect(() => {
     if (play === true) {
       const interval = setInterval(() => {
-        if (currentDuration === songLength) return () => clearInterval(interval);
+        if (currentDuration >= songLength) return () => clearInterval(interval);
         setCurrentDuration(ms => currentDuration + 1000);
       }, 1050);
       return () => clearInterval(interval);

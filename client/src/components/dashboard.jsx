@@ -27,17 +27,12 @@ export default function Dashboard() {
 
     (async () => {
       try {
-        const user = await axios.post('/fetchUser', {
-          access_token: accessToken,
-        });
+        const user = await axios.post('/fetchUser');
+        console.log(user)
         setUserDetails(user.data);
-        const playlist = await axios.post('/playlists', {
-          access_token: accessToken,
-        });
+        const playlist = await axios.post('/playlists');
         dispatch(setPlaylists(playlist.data));
-        const master = await axios.post('/master', {
-          access_token: accessToken,
-        });
+        const master = await axios.post('/master');
         setMaster(master.data);
       } catch (e) {
         console.error(e)

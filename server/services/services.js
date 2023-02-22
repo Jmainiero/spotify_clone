@@ -1,47 +1,33 @@
 const axios = require('axios');
 
-const getUserDetails = async (accessToken) => {
+const getUserDetails = async () => {
     try {
-        const r = await axios.get('https://api.spotify.com/v1/me', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
-
-        });
+        const r = await axios.get('https://api.spotify.com/v1/me');
         return r.data;
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getAllPlaylists = async (accessToken) => {
+const getAllPlaylists = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/playlists', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
-            params: {
+           params: {
                 limit: 50
             }
         });
         return r.data.items;
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getRecommended = async (accessToken) => {
+const getRecommended = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/recommendations', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
-            params: {
+           params: {
                 seed_tracks: '69AIpwGNLxr4qS1X5ynx60',
                 seed_atists: ['7dGJo4pcD2V6oG8kP0tJRR', '0BvkDsjIUla7X0k6CSWh1I', '5P5FTygHyx2G57oszR3Wot', '04gDigrS5kc9YWfZHwBETP'],
                 seed_genre: ['country', 'pop', 'contemporary', 'rap'],
@@ -56,18 +42,14 @@ const getRecommended = async (accessToken) => {
             })
         });
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getRecentlyPlayed = async (accessToken) => {
+const getRecentlyPlayed = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/player/recently-played', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
-            params: {
+           params: {
                 limit: 50
             }
         });
@@ -81,18 +63,14 @@ const getRecentlyPlayed = async (accessToken) => {
         });
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getFeaturedPlaylists = async (accessToken) => {
+const getFeaturedPlaylists = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/browse/featured-playlists', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
-            params: {
+          params: {
                 limit: 50
             }
         });
@@ -103,35 +81,27 @@ const getFeaturedPlaylists = async (accessToken) => {
         };
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getTopArtistsTracks = async (accessToken) => {
+const getTopArtistsTracks = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/top/artists', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
-            params: {
+           params: {
                 limit: 50
             }
         });
         return r.data.items;
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getDefaultPlaylists = async (accessToken) => {
+const getDefaultPlaylists = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/search?q=Daily%20Mix', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
             params: {
                 'type': 'playlist'
             }
@@ -145,17 +115,13 @@ const getDefaultPlaylists = async (accessToken) => {
         });
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getNewReleases = async (accessToken) => {
+const getNewReleases = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            },
             params: {
                 limit: 50
             }
@@ -167,33 +133,23 @@ const getNewReleases = async (accessToken) => {
         });
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getTopCategories = async (accessToken) => {
+const getTopCategories = async () => {
     try {
-        const r = await axios.get('https://api.spotify.com/v1/browse/categories', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            }
-        });
+        const r = await axios.get('https://api.spotify.com/v1/browse/categories');
         return r.data.categories.items;
 
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const getPlayerState = async (accessToken) => {
+const getPlayerState = async () => {
     try {
-        const r = await axios.get('https://api.spotify.com/v1/me/player/', {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            }
-        });
+        const r = await axios.get('https://api.spotify.com/v1/me/player/');
         return {
             current_duration: r.data.progress_ms,
             song_length: r.data.item.duration_ms,
@@ -202,30 +158,28 @@ const getPlayerState = async (accessToken) => {
             song_cover: r.data.item.album.images[0].url
         };
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 };
 
-const changePlayerState = async (accessToken, state, spotifyURI = '') => {
+const changePlayerState = async (state, spotifyURI = '') => {
     try {
         const config = {
             method: 'put',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            }
+            // headers: {
+            //     'Accept': 'application/json',
+            //     'Authorization': 'Bearer ' + accessToken
+            // }
         }
-
         if (state === 'play' && spotifyURI !== '' && spotifyURI.indexOf('track') > -1) {
             config.data = {
                 uris: [spotifyURI]
             }
-        } else if (state === 'play' && spotifyURI !== '' && (spotifyURI.indexOf('album') > -1 || spotifyURI.indexOf('artist') > -1 )) {
+        } else if (state === 'play' && spotifyURI !== '' && (spotifyURI.indexOf('album') > -1 || spotifyURI.indexOf('artist') > -1)) {
             config.data = {
                 context_uri: spotifyURI
             }
         }
-        console.log(config)
         const r = await axios(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`, config)
         return r
 
@@ -234,14 +188,9 @@ const changePlayerState = async (accessToken, state, spotifyURI = '') => {
     }
 };
 
-const skipToState = async (accessToken, state, spotifyURI = null) => {
+const skipToState = async (state, spotifyURI = null) => {
     try {
-        const r = await axios.post(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`, {}, {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + accessToken
-            }
-        });
+        const r = await axios.post(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`);
         return r
 
     } catch (e) {
