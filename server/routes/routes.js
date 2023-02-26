@@ -13,7 +13,8 @@ const { getUserDetails,
     getTopCategories,
     getPlayerState,
     changePlayerState,
-    skipToState } = require("../services/services");
+    skipToState,
+    getDevices } = require("../services/services");
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -49,13 +50,14 @@ router.post("/login", (req, res, next) => {
 
 router.post('/token', async (req, res, next) => {
     try {
-        const { code } = req.body || null
+        const { authorization } = req.headers || null
+        console.log('INGESTING CODE: ', authorization)
         const spotifyApi = new SpotifyWebApi({
             redirectUri: process.env.REDIRECT_URI,
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
         })
-        const r = await spotifyApi.authorizationCodeGrant(code)
+        const r = await spotifyApi.authorizationCodeGrant(authorization)
         res.json({
             refresh_token: r.body.refresh_token,
             expires_in: r.body.expires_in,
@@ -211,13 +213,13 @@ router.post('/getPlayerState', async (req, res, next) => {
 router.post('/changePlayerState', async (req, res, next) => {
     try {
         const { state, spotifyURI } = req.body
-        if (!state) return next('Please Enter a valid player state.'); 
+        if (!state) return next('Please Enter a valid player state.');
         await changePlayerState(state, spotifyURI);
-        
+
         //Delay is necessary to await allow Spotify to "Play" the track. If this is not delayed, we will not have any meta-data to return to the client.
         await delay(1000)
 
-        const getPlayerDetails = await getPlayerState(); 
+        const getPlayerDetails = await getPlayerState();
         res.status(200).json({
             getPlayerDetails
         });
@@ -230,13 +232,13 @@ router.post('/changePlayerState', async (req, res, next) => {
 router.post('/skipToState', async (req, res, next) => {
     try {
         const { state } = req.body
-        if (!state) return next('Please Enter a valid player state.'); 
+        if (!state) return next('Please Enter a valid player state.');
         await skipToState(state);
 
         //Delay is necessary to await allow Spotify to "Play" the track. If this is not delayed, we will not have any meta-data to return to the client.
         await delay(1000)
-        
-        const getPlayerDetails = await getPlayerState(); 
+
+        const getPlayerDetails = await getPlayerState();
         res.status(200).json({
             getPlayerDetails
         });
@@ -245,6 +247,16 @@ router.post('/skipToState', async (req, res, next) => {
         return next(new Error(e));
     }
 });
+router.get('/devices', async (req, res, next) => {
+    try {
+        const devices = await getDevices();
+        res.status(200).send(devices)
+    } catch (e) {
+        console.log(e)
+        // return next(new Error(e));
+    }
+});
+
 module.exports = router;
 
 

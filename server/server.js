@@ -20,12 +20,13 @@ app.use(cors(corsOptions));
 */
 
 app.use((req, res, next) => {
+    console.log(req.headers)
     if (req.headers.authorization) {
         axios.defaults.headers.common['Authorization'] = req.headers.authorization
         axios.defaults.headers.post['Content-Type'] = 'application/json';
         next()
     } else {
-        return next(new Error('Catching 28'));
+        return next(new Error('Error. No Authorization Detected'));
     }
 
 })

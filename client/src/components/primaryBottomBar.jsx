@@ -1,15 +1,16 @@
 import axios from 'axios'
 import { setPlaying } from '../redux/actions/playerActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShuffle, faPlay, faPause, faBackward, faForward, faRepeat } from '@fortawesome/free-solid-svg-icons'
+import { faShuffle, faPlay, faPause, faBackward, faForward, faRepeat, faDesktop } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Devices from './devices'
 import CostumRange from './CostumRange.js'
 
 const secondsToTime = (ms) => {
   const minutes = (ms / 60000).toString().split('.')[0]
   const seconds = ('0.' + (ms / 60000).toString().split('.')[1]) * 60 / 100
-  return parseFloat(parseInt(minutes) + seconds, 2).toFixed(2)
+  return (typeof parseFloat(parseInt(minutes) + seconds, 2).toFixed(2) === 'number') ? parseFloat(parseInt(minutes) + seconds, 2).toFixed(2) : '0:00'
 }
 
 const PrimaryBottomBar = () => {
@@ -50,7 +51,7 @@ const PrimaryBottomBar = () => {
 
   useEffect(() => {
     (async () => {
-      console.log(requestedSong, currentSong, requestedSong !== currentSong)
+      // console.log(requestedSong, currentSong, requestedSong !== currentSong)
       await axios
         .post('/changePlayerState', {
           state: (play === true ? 'play' : 'pause'),
@@ -121,7 +122,7 @@ const PrimaryBottomBar = () => {
           </div>
           <div className='player_primary__bottom'>
             <div className='player_primary__bottom__bar__text'>
-              {secondsToTime(currentDuration).toString().replace('.', ':')}
+              {secondsToTime(currentDuration).toString().replace('.', ':') || '0:00'}
             </div>
 
             <CostumRange
@@ -132,11 +133,11 @@ const PrimaryBottomBar = () => {
             />
 
             <div className='player_primary__bottom__bar__text'>
-              {secondsToTime(songLength).toString().replace('.', ':')}
+              {secondsToTime(songLength).toString().replace('.', ':') || '0:00'}
             </div>
-
           </div>
         </div>
+        <Devices />
       </div>
     </div>
   );

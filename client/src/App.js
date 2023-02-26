@@ -15,17 +15,16 @@ function App() {
   const accessToken = useSelector((state) => state.auth.accessTK);
   const expiresIn = useSelector((state) => state.auth.expiration);
 
-
-
-  useEffect(() => {
-    if (!accessToken) {
-      <Redirect to="/login" />
-    }
-  }, [], UseAuth())
-
-  useEffect(()=>{
-    console.log(axios.defaults.headers)
-  })
+  console.log(axios.defaults.headers)
+  console.log('App.js loaded')
+  console.log(accessToken)
+  if (accessToken && axios.defaults.headers.common['Authorization'] != `Bearer ${accessToken}`) {
+    console.log('Setting Axios')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+    console.log(axios.defaults.headers);
+    <Redirect to="/login" />
+  }
 
   if (new URLSearchParams(window.location.search).get('code')) {
     dispatch(setAuthToken(new URLSearchParams(window.location.search).get('code')));
@@ -35,7 +34,7 @@ function App() {
     <Router>
       <div className='App'>
         <Switch>
-          <Route path="/home" query="code"><Redirect to="/" /></Route>
+          <Route path="/home" query="code" onEnter={UseAuth()}><Redirect to="/" /></Route>
           <Route path="/login" exact component={Login} />
           {accessToken && Date.now() <= expiresIn ?
             <Route path="/" exact> <Dashboard /> </Route> : <Login />

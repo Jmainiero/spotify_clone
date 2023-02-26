@@ -82,6 +82,7 @@ const getFeaturedPlaylists = async () => {
 
     } catch (e) {
         console.log(e);
+        return e;
     }
 };
 
@@ -96,6 +97,7 @@ const getTopArtistsTracks = async () => {
 
     } catch (e) {
         console.log(e);
+        return e;
     }
 };
 
@@ -116,6 +118,7 @@ const getDefaultPlaylists = async () => {
 
     } catch (e) {
         console.log(e);
+        return e;
     }
 };
 
@@ -134,6 +137,7 @@ const getNewReleases = async () => {
 
     } catch (e) {
         console.log(e);
+        return e;
     }
 };
 
@@ -150,15 +154,17 @@ const getTopCategories = async () => {
 const getPlayerState = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/player/');
+        console.log(r)
         return {
-            current_duration: r.data.progress_ms,
-            song_length: r.data.item.duration_ms,
-            song_title: r.data.item.name,
-            song_artist: r.data.item.artists[0].name,
-            song_cover: r.data.item.album.images[0].url
+            current_duration: r.data.progress_ms || 0,
+            song_length: r.data.item.duration_ms || 0,
+            song_title: r.data.item.name || '',
+            song_artist: r.data.item.artists[0].name || '',
+            song_cover: r.data.item.album.images[0].url || ''
         };
     } catch (e) {
         console.log(e);
+        return e;
     }
 };
 
@@ -185,6 +191,7 @@ const changePlayerState = async (state, spotifyURI = '') => {
 
     } catch (e) {
         // console.log(e);
+        return e;
     }
 };
 
@@ -195,6 +202,16 @@ const skipToState = async (state, spotifyURI = null) => {
 
     } catch (e) {
         // console.log(e);
+        return e;
+    }
+};
+const getDevices = async (state, spotifyURI = null) => {
+    try {
+        const r = await axios.get(`https://api.spotify.com/v1/me/player/devices`);
+        return r.data.devices
+    } catch (e) {
+        console.log(e);
+        // return e;
     }
 };
 
@@ -210,5 +227,6 @@ module.exports = {
     getTopCategories,
     getPlayerState,
     changePlayerState,
-    skipToState
+    skipToState,
+    getDevices
 };
