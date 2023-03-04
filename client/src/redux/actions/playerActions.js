@@ -12,3 +12,10 @@ export const setPlaying = (state) => {
         payload: state,
     };
 };
+
+export const setDevice = (state) => {
+    return {
+        type: ActionTypes.SET_DEVICE,
+        payload: state,
+    };
+};

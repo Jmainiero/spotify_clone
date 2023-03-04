@@ -11,7 +11,6 @@ const CostumRange = ({ value, step, min, max, onChange }) => {
             values={[value]}
             onChange={(values) => {
                 value = values[0]
-                // console.log(value)
             }
             }
             renderTrack={({ props, children }) => (

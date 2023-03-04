@@ -11,7 +11,7 @@ const UseAuth = () => {
   const expiresIn = useSelector((state) => state.auth.expiration);
 
   useEffect(() => {
-    console.table([code, refreshToken, accessToken, expiresIn, axios.defaults.headers.Authorization])
+    // console.table([code, refreshToken, accessToken, expiresIn, axios.defaults.headers.Authorization])
     if ((!refreshToken && !expiresIn && !accessToken) && !!code) {
       console.log('/token')
       axios
@@ -35,9 +35,7 @@ const UseAuth = () => {
       refreshToken: refreshToken,
     })
     .then((res) => {
-      console.log(res)
       if (res.data.accessToken) {
-        console.log('Setting new token')
         dispatch(setAccessToken(res.data.accessToken))
         dispatch(setExpiration(Date.now() + 3000000))
       }

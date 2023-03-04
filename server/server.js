@@ -20,7 +20,6 @@ app.use(cors(corsOptions));
 */
 
 app.use((req, res, next) => {
-    console.log(req.headers)
     if (req.headers.authorization) {
         axios.defaults.headers.common['Authorization'] = req.headers.authorization
         axios.defaults.headers.post['Content-Type'] = 'application/json';

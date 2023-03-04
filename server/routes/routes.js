@@ -212,9 +212,9 @@ router.post('/getPlayerState', async (req, res, next) => {
 
 router.post('/changePlayerState', async (req, res, next) => {
     try {
-        const { state, spotifyURI } = req.body
+        const { state, spotifyURI, device } = req.body
         if (!state) return next('Please Enter a valid player state.');
-        await changePlayerState(state, spotifyURI);
+        await changePlayerState(state, spotifyURI, device);
 
         //Delay is necessary to await allow Spotify to "Play" the track. If this is not delayed, we will not have any meta-data to return to the client.
         await delay(1000)
@@ -224,8 +224,10 @@ router.post('/changePlayerState', async (req, res, next) => {
             getPlayerDetails
         });
     } catch (e) {
-        // console.log(e)
-        return next(new Error(e));
+        if(e.code === 404){
+            res.status(404).json({status: 404, msg:'No Player Selected'})
+        }
+        return next(new Error(e))
     }
 });
 
@@ -253,7 +255,7 @@ router.get('/devices', async (req, res, next) => {
         res.status(200).send(devices)
     } catch (e) {
         console.log(e)
-        // return next(new Error(e));
+        return next(new Error(e));
     }
 });
 

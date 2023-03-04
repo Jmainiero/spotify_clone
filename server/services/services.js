@@ -13,7 +13,7 @@ const getUserDetails = async () => {
 const getAllPlaylists = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/playlists', {
-           params: {
+            params: {
                 limit: 50
             }
         });
@@ -27,7 +27,7 @@ const getAllPlaylists = async () => {
 const getRecommended = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/recommendations', {
-           params: {
+            params: {
                 seed_tracks: '69AIpwGNLxr4qS1X5ynx60',
                 seed_atists: ['7dGJo4pcD2V6oG8kP0tJRR', '0BvkDsjIUla7X0k6CSWh1I', '5P5FTygHyx2G57oszR3Wot', '04gDigrS5kc9YWfZHwBETP'],
                 seed_genre: ['country', 'pop', 'contemporary', 'rap'],
@@ -49,7 +49,7 @@ const getRecommended = async () => {
 const getRecentlyPlayed = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/player/recently-played', {
-           params: {
+            params: {
                 limit: 50
             }
         });
@@ -70,7 +70,7 @@ const getRecentlyPlayed = async () => {
 const getFeaturedPlaylists = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/browse/featured-playlists', {
-          params: {
+            params: {
                 limit: 50
             }
         });
@@ -89,7 +89,7 @@ const getFeaturedPlaylists = async () => {
 const getTopArtistsTracks = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/top/artists', {
-           params: {
+            params: {
                 limit: 50
             }
         });
@@ -154,7 +154,7 @@ const getTopCategories = async () => {
 const getPlayerState = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/player/');
-        console.log(r)
+        if (r.data.length === 0) return 'No Data'
         return {
             current_duration: r.data.progress_ms || 0,
             song_length: r.data.item.duration_ms || 0,
@@ -168,14 +168,10 @@ const getPlayerState = async () => {
     }
 };
 
-const changePlayerState = async (state, spotifyURI = '') => {
+const changePlayerState = async (state, spotifyURI = '', device = '') => {
     try {
         const config = {
-            method: 'put',
-            // headers: {
-            //     'Accept': 'application/json',
-            //     'Authorization': 'Bearer ' + accessToken
-            // }
+            method: 'put'
         }
         if (state === 'play' && spotifyURI !== '' && spotifyURI.indexOf('track') > -1) {
             config.data = {
@@ -186,12 +182,19 @@ const changePlayerState = async (state, spotifyURI = '') => {
                 context_uri: spotifyURI
             }
         }
-        const r = await axios(`https://api.spotify.com/v1/me/player/${state}?device_id=ef7985c6ad03a74e9a359c462f9085bf410b76c9`, config)
+        const r = await axios(`https://api.spotify.com/v1/me/player/${state}?device_id=${device}`, config)
+        console.log(r)
         return r
 
     } catch (e) {
-        // console.log(e);
-        return e;
+        if (e.response.status === 404) {
+            throw ({
+                code: e.response.status,
+                msg: e.response.statusText
+            });
+        }
+        throw new Error(e)
+
     }
 };
 

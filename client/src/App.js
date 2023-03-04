@@ -15,14 +15,9 @@ function App() {
   const accessToken = useSelector((state) => state.auth.accessTK);
   const expiresIn = useSelector((state) => state.auth.expiration);
 
-  console.log(axios.defaults.headers)
-  console.log('App.js loaded')
-  console.log(accessToken)
   if (accessToken && axios.defaults.headers.common['Authorization'] != `Bearer ${accessToken}`) {
-    console.log('Setting Axios')
     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     axios.defaults.headers.post['Content-Type'] = 'application/json';
-    console.log(axios.defaults.headers);
     <Redirect to="/login" />
   }
 

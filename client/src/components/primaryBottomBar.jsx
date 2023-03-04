@@ -18,8 +18,8 @@ const PrimaryBottomBar = () => {
 
   //Can be set anywhere
   const requestedSong = useSelector(state => state.player.currentSong)
-  const accessToken = useSelector(state => state.auth.accessTK)
   const play = useSelector(state => state.player.playing)
+  const currentDevice = useSelector(state => state.player.device.id)
 
   //Set locally here for display purposes.
   const [albumCover, setAlbumCover] = useState('')
@@ -52,18 +52,17 @@ const PrimaryBottomBar = () => {
   useEffect(() => {
     (async () => {
       // console.log(requestedSong, currentSong, requestedSong !== currentSong)
+      console.log(play)
+      console.log('Running Code Block')
       await axios
         .post('/changePlayerState', {
           state: (play === true ? 'play' : 'pause'),
-          spotifyURI: (requestedSong !== currentSong ? requestedSong : '')
-        }, {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + accessToken
-          }
+          spotifyURI: (requestedSong !== currentSong ? requestedSong : ''),
+          device: currentDevice
         }
         )
         .then((res) => {
+          console.log(res)
           if (res.status === 200) {
             setAlbumCover(res.data.getPlayerDetails.song_cover)
             setSongTitle(res.data.getPlayerDetails.song_title)
@@ -71,11 +70,10 @@ const PrimaryBottomBar = () => {
             setCurrentDuration(res.data.getPlayerDetails.current_duration)
             setArtist(res.data.getPlayerDetails.song_artist)
             setCurrentSong(requestedSong)
-            console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
+            // console.table([play, albumCover, songTitle, currentDuration, songLength, artist])
           }
         })
         .catch((e) => {
-          console.error(e)
         });
     })()
   }, [play, requestedSong])

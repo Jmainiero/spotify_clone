@@ -28,7 +28,6 @@ export default function Dashboard() {
     (async () => {
       try {
         const user = await axios.post('/fetchUser');
-        console.log(user)
         setUserDetails(user.data);
         const playlist = await axios.post('/playlists');
         dispatch(setPlaylists(playlist.data));
