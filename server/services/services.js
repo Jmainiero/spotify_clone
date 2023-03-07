@@ -183,7 +183,6 @@ const changePlayerState = async (state, spotifyURI = '', device = '') => {
             }
         }
         const r = await axios(`https://api.spotify.com/v1/me/player/${state}?device_id=${device}`, config)
-        console.log(r)
         return r
 
     } catch (e) {

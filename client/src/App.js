@@ -1,21 +1,20 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from 'react';
 import axios from 'axios';
 import './sass/_main.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { setAuthToken } from './redux/actions/authActions';
-import Login from './components/login';
-import Dashboard from './components/dashboard';
-import UseAuth from './components/auth';
+import Login from './components/login/login';
+import Dashboard from './components/dashboard/dashboard';
+import UseAuth from './components/auth/auth';
 
 function App() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.accessTK);
   const expiresIn = useSelector((state) => state.auth.expiration);
 
-  if (accessToken && axios.defaults.headers.common['Authorization'] != `Bearer ${accessToken}`) {
+  if (accessToken && axios.defaults.headers.common['Authorization'] !== `Bearer ${accessToken}`) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     axios.defaults.headers.post['Content-Type'] = 'application/json';
     <Redirect to="/login" />
