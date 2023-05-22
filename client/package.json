@@ -19,7 +19,7 @@
     "react-range": "^1.8.14",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "react-slick": "^0.28.1",
     "react-spinners": "^0.11.0",
     "react-spotify-web-playback": "^0.8.2",
@@ -56,5 +56,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3001",
+  "devDependencies": {
+    "webpack": "^5.82.1"
+  }
 }

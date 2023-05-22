@@ -27,7 +27,6 @@ router.post("/login", (req, res, next) => {
             clientSecret: process.env.CLIENT_SECRET,
         });
         const code = req.body.code;
-        console.log(code)
         var authorizeURL = spotifyApi.createAuthorizeURL(scopes);
         spotifyApi
             .authorizationCodeGrant(code)
@@ -42,7 +41,7 @@ router.post("/login", (req, res, next) => {
                 res.sendStatus(400);
             })
     } catch (e) {
-        console.log(e);
+        
         return next(new Error(e));
     }
 
@@ -51,7 +50,6 @@ router.post("/login", (req, res, next) => {
 router.post('/token', async (req, res, next) => {
     try {
         const { authorization } = req.headers || null
-        console.log('INGESTING CODE: ', authorization)
         const spotifyApi = new SpotifyWebApi({
             redirectUri: process.env.REDIRECT_URI,
             clientId: process.env.CLIENT_ID,
@@ -64,14 +62,12 @@ router.post('/token', async (req, res, next) => {
             access_token: r.body.access_token
         })
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 
 });
 
 router.post("/refresh", (req, res, next) => {
-    console.log('Refreshing Token', req.body.refreshToken)
     const refreshToken = req.body.refreshToken;
     const spotifyApi = new SpotifyWebApi({
         redirectUri: process.env.REDIRECT_URI,
@@ -83,14 +79,12 @@ router.post("/refresh", (req, res, next) => {
     spotifyApi
         .refreshAccessToken()
         .then(data => {
-            console.log(data)
             res.json({
                 accessToken: data.body.access_token,
                 expiresIn: data.body.expires_in,
             })
         })
         .catch(err => {
-            console.log(err)
             res.sendStatus(400);
             return next(new Error(e));
         })
@@ -105,7 +99,6 @@ router.post('/master', async (req, res, next) => {
         r.push(await getRecentlyPlayed());
         res.status(200).send(r);
     } catch (e) {
-        // console.log(e)
         return next(new Error(e));
     }
 });
@@ -115,7 +108,6 @@ router.post('/fetchUser', async (req, res, next) => {
         const r = await getUserDetails();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 })
@@ -125,7 +117,6 @@ router.post('/playlists', async (req, res, next) => {
         const r = await getAllPlaylists();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 })
@@ -135,7 +126,7 @@ router.post('/recommended', async (req, res, next) => {
         const r = await getRecommended();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
+        
         return next(new Error(e));
     }
 });
@@ -145,7 +136,6 @@ router.post('/recentlyPlayed', async (req, res, next) => {
         const r = await getRecentlyPlayed();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 });
@@ -155,7 +145,6 @@ router.post('/defaultPlaylists', async (req, res, next) => {
         const r = await getDefaultPlaylists();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 });
@@ -165,7 +154,7 @@ router.post('/getFeatured', async (req, res, next) => {
         const r = await getFeaturedPlaylists();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
+        
         return next(new Error(e));
     }
 });
@@ -175,7 +164,7 @@ router.post('/getTopArtistTrack', async (req, res, next) => {
         const r = await getTopArtistsTracks();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
+        
         return next(new Error(e));
     }
 });
@@ -185,7 +174,7 @@ router.post('/getNewReleases', async (req, res, next) => {
         const r = await getNewReleases();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
+        
         return next(new Error(e));
     }
 });
@@ -195,7 +184,6 @@ router.post('/getTopCategories', async (req, res, next) => {
         const r = await getTopCategories();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 });
@@ -205,7 +193,6 @@ router.post('/getPlayerState', async (req, res, next) => {
         const r = await getPlayerState();
         res.status(200).send(r);
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 });
@@ -224,10 +211,7 @@ router.post('/changePlayerState', async (req, res, next) => {
             getPlayerDetails
         });
     } catch (e) {
-        if(e.code === 404){
-            res.status(404).json({status: 404, msg:'No Player Selected'})
-        }
-        return next(new Error(e))
+        return next(e)
     }
 });
 
@@ -245,7 +229,6 @@ router.post('/skipToState', async (req, res, next) => {
             getPlayerDetails
         });
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 });
@@ -254,7 +237,6 @@ router.get('/devices', async (req, res, next) => {
         const devices = await getDevices();
         res.status(200).send(devices)
     } catch (e) {
-        console.log(e)
         return next(new Error(e));
     }
 });

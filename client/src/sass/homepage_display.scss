@@ -1,0 +1,130 @@
+.ring-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -50px 0 0 -50px;
+}
+
+.main-container {
+    font-size: 0.8rem;
+    margin-left: 245px;
+    overflow-x: hidden;
+    height: calc(100vh - 150px);
+}
+
+.main-view {
+    margin-left: 2rem;
+}
+
+.recommended {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+
+    &--title {
+        flex-basis: 100%;
+        text-align: left;
+
+        & h1 {
+            font-weight: 800;
+        }
+
+        & h4 {
+            font-weight: 500;
+
+        }
+    }
+
+    &--carousel {
+        width: calc(100% - 5vw);
+    }
+
+    &--block {
+        position: relative;
+        background-color: rgba(24, 24, 24, 1);
+        border-radius: 13px;
+        padding: 1rem;
+        margin: 0.6rem;
+        width: 10rem !important;
+        height: 15rem;
+        overflow: hidden;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+        text-align: left;
+
+        &__overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            width: 100%;
+            height: 0;
+            transition: 0.6s ease;
+            text-align: center;
+
+            & svg {
+                color: rgba(30, 215, 96, 0.6);
+            }
+        }
+
+        &__cover {
+            max-height: 80%;
+
+            img {
+                width: 100%;
+                height: 85%;
+                border-radius: 13px;
+            }
+        }
+
+        &__title {
+            margin-top: 0.6rem;
+            display: inline-block;
+            width: 80%;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            font-weight: 800;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        &__desc {
+            width: 80%;
+            margin-top: 0.5rem;
+            font-weight: 300;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        &__artist {
+            margin-top: 0.5rem;
+            font-weight: 300;
+
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .1);
+            transform: translateY(-10px);
+        }
+
+        &:hover &__overlay {
+            height: 100%;
+
+            & svg,
+            &__IconButton {
+                height: 100%;
+            }
+
+            & svg {
+                width: 40%;
+
+            }
+        }
+
+    }
+}

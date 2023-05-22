@@ -165,7 +165,7 @@ a {
 .bottom-bar {
   width: 100%;
   background: #181818;
-  position: absolute;
+  position: fixed;
   bottom: calc(0px + 35px);
   left: 0;
   padding-top: 1rem;

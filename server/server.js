@@ -35,6 +35,7 @@ app.use("/", router);
 
 //Global error handler to send to client.
 app.use((error, next, res, req) => {
+    // console.log(error.message)
     res.status(error.status || 500);
     res.json({
         error: {

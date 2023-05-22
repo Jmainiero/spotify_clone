@@ -6,7 +6,8 @@ const getUserDetails = async () => {
         return r.data;
 
     } catch (e) {
-        console.log(e);
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -20,7 +21,8 @@ const getAllPlaylists = async () => {
         return r.data.items;
 
     } catch (e) {
-        console.log(e);
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -42,7 +44,8 @@ const getRecommended = async () => {
             })
         });
     } catch (e) {
-        console.log(e);
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -63,7 +66,8 @@ const getRecentlyPlayed = async () => {
         });
 
     } catch (e) {
-        console.log(e);
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -81,8 +85,8 @@ const getFeaturedPlaylists = async () => {
         };
 
     } catch (e) {
-        console.log(e);
-        return e;
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -96,8 +100,8 @@ const getTopArtistsTracks = async () => {
         return r.data.items;
 
     } catch (e) {
-        console.log(e);
-        return e;
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -117,8 +121,8 @@ const getDefaultPlaylists = async () => {
         });
 
     } catch (e) {
-        console.log(e);
-        return e;
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -136,8 +140,8 @@ const getNewReleases = async () => {
         });
 
     } catch (e) {
-        console.log(e);
-        return e;
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -147,24 +151,27 @@ const getTopCategories = async () => {
         return r.data.categories.items;
 
     } catch (e) {
-        console.log(e);
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
 const getPlayerState = async () => {
     try {
         const r = await axios.get('https://api.spotify.com/v1/me/player/');
-        if (r.data.length === 0) return 'No Data'
+        if (r.data.length === 0) return new Error({ status: 204, message: 'No Data' })
         return {
             current_duration: r.data.progress_ms || 0,
             song_length: r.data.item.duration_ms || 0,
             song_title: r.data.item.name || '',
             song_artist: r.data.item.artists[0].name || '',
-            song_cover: r.data.item.album.images[0].url || ''
+            song_cover: r.data.item.album.images[0].url || '',
+            is_playing: r.data.is_playing,
+            device: { device: r.data.device.name, id: r.data.device.id }
         };
     } catch (e) {
-        console.log(e);
-        return e;
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
@@ -186,13 +193,14 @@ const changePlayerState = async (state, spotifyURI = '', device = '') => {
         return r
 
     } catch (e) {
-        if (e.response.status === 404) {
+
+        if (e.response.status === 404 && e.response.data.error.message.toLowerCase() === 'device not found') {
             throw ({
-                code: e.response.status,
-                msg: e.response.statusText
+                status: 400,
+                message: e.response.data.error.message
             });
         }
-        throw new Error(e)
+        throw ({ status: e.response.status, message: e.response.data.error.message })
 
     }
 };
@@ -203,8 +211,7 @@ const skipToState = async (state, spotifyURI = null) => {
         return r
 
     } catch (e) {
-        // console.log(e);
-        return e;
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 const getDevices = async (state, spotifyURI = null) => {
@@ -212,8 +219,8 @@ const getDevices = async (state, spotifyURI = null) => {
         const r = await axios.get(`https://api.spotify.com/v1/me/player/devices`);
         return r.data.devices
     } catch (e) {
-        console.log(e);
-        // return e;
+        
+        throw ({ status: e.response.status, message: e.response.data.error.message })
     }
 };
 
